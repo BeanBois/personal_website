@@ -7,52 +7,35 @@ const uiContainer = document.getElementById("ui-container");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-const playerWidth = 71*1.25;
-const playerHeight = 100 *1.25;
+const playerWidth = 71;
+const playerHeight = 100;
 const playerSpeed = 10;
-const player_sprite_count = 12;
 const proximityDistance = 150
 const collisionProximity = 30;
 
-// const characterImages = {
-//     up: new Image(),
-//     down: new Image(),
-//     left: new Image(),
-//     right: new Image()
-// };
+const characterImages = {
+    up: new Image(),
+    down: new Image(),
+    left: new Image(),
+    right: new Image()
+};
 
-// characterImages.up.src = "public/player/player_boy_1_.png"; // Update with character orientation images
-// characterImages.down.src = "public/player/player_boy_0_.png";
-// characterImages.left.src = "public/player/player_boy_2_.png";
-// characterImages.right.src = "public/player/player_boy_3_.png";
+characterImages.up.src = "public/player/player_boy_1_.png"; // Update with character orientation images
+characterImages.down.src = "public/player/player_boy_0_.png";
+characterImages.left.src = "public/player/player_boy_2_.png";
+characterImages.right.src = "public/player/player_boy_3_.png";
 // characterImages.up.src = "public/player/moving_animation.png"; // Update with character orientation images
 // characterImages.down.src = "public/player/moving_animation.png";
 // characterImages.left.src = "public/player/moving_animation.png";
 // characterImages.right.src = "public/player/moving_animation.png";
-const gender = 'boy';
-const characterImage = new Image();
-characterImage.src =`public/player/player_${gender}_sprite_transparent.png`;
-const orientation_map ={
-    'up': 1,
-    'down': 0,
-    'left': 3,
-    'right' : 2
-}
-const no_of_frames = 3;
 let currentOrientation = "down";
-let previousOrientation = "down";
-let movementCount = 0;
 
 
 const backgroundImage = new Image();
-backgroundImage.src = "public/maps/alpha/Hoenn_Secret_Base_Alpha.png"; // Replace with the path to your background image
+backgroundImage.src = "public/maps/gamma/Hoenn_Secret_Base_Gamma.png"; // Replace with the path to your background image
 
 const collisionMapImage = new Image();
-collisionMapImage.src = "public/maps/alpha/collision_map_alpha.jpg"; // Replace with the path to your collision map image
-
-
-
-
+collisionMapImage.src = "public/maps/gamma/collision_map_gamma.jpg"; // Replace with the path to your collision map image
 
 // Define the screen's width and height (your sliding window dimensions)
 const screenWidth = canvas.width;
@@ -60,8 +43,6 @@ const screenHeight = canvas.height;
 
 let playerX = canvas.width / 2 - playerWidth / 2;
 let playerY = canvas.height / 2 - playerHeight / 2;
-let _playerX = playerX;
-let _playerY = playerY;
 let screenX = 0;
 let screenY = 0;
 const stopThreshold = 0;
@@ -72,8 +53,8 @@ const scale = 10;
 function getUIPosition(uiElement) {
     const rect = uiElement.getBoundingClientRect();
     return {
-        x: rect.left,
-        y: rect.top,
+        x: rect.left + window.scrollX,
+        y: rect.top + window.scrollY,
     };
 }
 
@@ -101,8 +82,9 @@ function pngToScreen(x, y, imageScale=scale, screenWidth=screenWidth, screenHeig
 }
 
 
+
 //main functions
-characterImage.onload = () =>{ 
+characterImages[currentOrientation].onload = () =>{ 
     backgroundImage.onload = () => {
         collisionMapImage.onload = () => {
             
@@ -128,7 +110,6 @@ characterImage.onload = () =>{
                     drawX, drawY, 
                     zoomedWidth, zoomedHeight);
             }
-
             function drawCollisionMap(){
                 const zoomScale = scale;
 
@@ -154,34 +135,39 @@ characterImage.onload = () =>{
                     zoomedWidth, zoomedHeight);
 
             }
+            // let frameIndex = 0;
+            // const frameCount = 7; // Adjust this number based on the number of frames in your GIF
+            // const frameIncr = 10;
+            // const frameDelay = 10
+            // function drawPlayer() {
 
-            function updateUIpositions(reverse = false) {
+            //     const spriteWidth = characterImages[currentOrientation].width / frameCount;
+            //     const spriteHeight = characterImages[currentOrientation].height;
+
+            //     ctx.drawImage(
+            //         characterImages[currentOrientation],
+            //         frameIndex * spriteWidth,
+            //         0,
+            //         spriteWidth,
+            //         spriteHeight,
+            //         playerX,
+            //         playerY,
+            //         playerWidth,
+            //         playerHeight
+            //     );
+
+            //     frameIndex = (frameIndex + frameIncr) % frameCount;
+                
+            //     requestAnimationFrame(drawPlayer);
+            // }
+
+            function updateUIpositions() {
                 for(let i = 0; i < uiContainer.children.length; i++){
                     if(!(uiContainer.children[i].id in uiElementPositions)){
                         const uiElement = uiContainer.children[i];
                         const uiPosition = getUIPosition(uiElement);
                         uiElementPositions[uiElement.id] = uiPosition;
                         console.log('added new element');
-                    }
-                    else if(reverse){
-                        const uiElement = uiContainer.children[i];
-                        const _uiPosition = uiElementPositions[uiElement.id];
-                        switch(currentOrientation){
-                            case 'up':
-                                _uiPosition.x -= playerSpeed;
-                                break;
-                            case 'down':
-                                _uiPosition.x += playerSpeed;
-                                break;
-                            case 'left':
-                                _uiPosition.y -= playerSpeed;
-                                break;
-                            case 'right':
-                                _uiPosition.y += playerSpeed;
-                                break;
-                        }
-                        uiElementPositions[uiElement.id] = _uiPosition;
-                        console.log('reverse done');
                     }
                     else{
                         const uiElement = uiContainer.children[i];
@@ -227,33 +213,14 @@ characterImage.onload = () =>{
                 }
                 for(let i = 0; i < uiElements.length; i++){
                     const uiElement = uiElements[i];
-                    const uiPosition = uiElementPositions[uiElement.id];
+                    const uiPosition =  uiElementPositions[uiElement.id];
                     drawUIElement(uiElement, uiPosition.x, uiPosition.y);
                 }
             }
 
             function drawPlayer() {
-                // calculate offset for sprite
-                const orientation = orientation_map[currentOrientation];
-                const spriteWidth = characterImage.width / player_sprite_count;
-                const spriteHeight = characterImage.height;
-                const spriteX = spriteWidth * (orientation * 3 + movementCount) ;
-                const spriteY = 0;
-                ctx.drawImage(characterImage, spriteX, spriteY, spriteWidth, spriteHeight, _playerX, _playerY, playerWidth, playerHeight);
-                var x1 = _playerX;
-                var y1 = _playerY;
-                var x2 = _playerX + playerWidth;
-                var y2 = _playerY + playerHeight;
-          
-                // Define the stroke color
-                ctx.strokeStyle = "blue"; // You can use other CSS color values
-          
-                // Define the line width
-                ctx.lineWidth = 2;
-          
-                // Draw the rectangular border
-                ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
-                // ctx.drawImage(characterImage, spriteX, spriteY, spriteWidth, spriteHeight, playerX, playerY, playerWidth, playerHeight);
+                // Draw the character using the character image
+                ctx.drawImage(characterImages[currentOrientation], playerX, playerY, playerWidth, playerHeight);
             }
 
             function clearCanvas() {
@@ -271,17 +238,17 @@ characterImage.onload = () =>{
                 ctx.globalCompositeOperation = "destination-over"; // Set composite operation to "destination-over" for the collision map
                 drawCollisionMap();
 
+                
                 ctx.globalCompositeOperation = "source-over"; // Set composite operation back to "source-over" for drawing the player
-                // drawPlayer(); // Draw the player on top of the collision map
-                drawUI();                
-                // Draw the player
-                drawPlayer();
+                drawUI();
+                drawPlayer(); // Draw the player on top of the collision map
 
                     // lastFrameTime = timestamp;
                 // }
                 requestAnimationFrame(updateGameArea);
                 // setTimeout(updateGameArea, frameDelay);
             }
+            // requestAnimationFrame(updateGameArea);
 
             function _is_collision_ui(x,y, proximityRange = collisionProximity ){
                     // Check collision with UI elements
@@ -312,124 +279,47 @@ characterImage.onload = () =>{
                 return false; // No collision with UI elements detected
             }
 
-            function isCollision(x, y, width, height) {
+            function isCollision(x, y) {
                 ctx.globalCompositeOperation = "source-over"; // Set composite operation to "source-over"
                 drawCollisionMap();
+
                 
                 ctx.globalCompositeOperation = "destination-over"; // Set composite operation to "destination-over" for the collision map
                 drawBackground(); // Draw the background image first
-                switch(currentOrientation){
-                    case 'up':
-                        //check collision of upper border
-                        for(let i =0; i < width; i++){
-                            const pixelData = ctx.getImageData(x + i, y, 1, 1).data;
-                            // Customize this check based on the color of your walls in the collision map image
-                            if (pixelData[0] === 0 && pixelData[1] === 0 && pixelData[2] === 0) {
-                                ctx.globalCompositeOperation = "source-over"; // Set composite operation to "source-over"
-                    
-                                drawBackground(); // Draw the background image first
-                                
-                                ctx.globalCompositeOperation = "destination-over"; // Set composite operation to "destination-over" for the collision map
-                                drawCollisionMap(); // Draw the collision map on top of the background image
-    
-                                ctx.globalCompositeOperation = "source-over"; // Set composite operation back to "source-over" for drawing the player
-                                drawPlayer(); // Draw the player on top of the collision map
-                                return true; // Collision detected at any point within the player's area
-                            }
-                        }
-                        ctx.globalCompositeOperation = "source-over"; // Set composite operation to "source-over"
                 
-                        drawBackground(); // Draw the background image first
-                        
-                        ctx.globalCompositeOperation = "destination-over"; // Set composite operation to "destination-over" for the collision map
-                        drawCollisionMap();
-                        return false;
+                for (let i = 0; i < playerWidth; i++) {
+                    for (let j = 0; j < playerHeight; j++) {
+                        const pixelData = ctx.getImageData(x + i, y + j, 1, 1).data;
+                        // Customize this check based on the color of your walls in the collision map image
+                        if (pixelData[0] === 0 && pixelData[1] === 0 && pixelData[2] === 0) {
+                            ctx.globalCompositeOperation = "source-over"; // Set composite operation to "source-over"
+                
+                            drawBackground(); // Draw the background image first
+                            
+                            ctx.globalCompositeOperation = "destination-over"; // Set composite operation to "destination-over" for the collision map
+                            drawCollisionMap();
 
-                    case 'down':
-                        //check collision of lower border
-                        for(let i =0; i < width; i++){
-                            const pixelData = ctx.getImageData(x + i, y + height , 1, 1).data;
-                            // Customize this check based on the color of your walls in the collision map image
-                            if (pixelData[0] === 0 && pixelData[1] === 0 && pixelData[2] === 0) {
-                                ctx.globalCompositeOperation = "source-over"; // Set composite operation to "source-over"
-                    
-                                drawBackground(); // Draw the background image first
-                                
-                                ctx.globalCompositeOperation = "destination-over"; // Set composite operation to "destination-over" for the collision map
-                                drawCollisionMap(); // Draw the collision map on top of the background image
-    
-                                ctx.globalCompositeOperation = "source-over"; // Set composite operation back to "source-over" for drawing the player
-                                drawPlayer(); // Draw the player on top of the collision map
-                                return true; // Collision detected at any point within the player's area
-                            }
+                            ctx.globalCompositeOperation = "source-over"; // Set composite operation back to "source-over" for drawing the player
+                            drawPlayer(); // Draw the player on top of the collision map
+                            return true; // Collision detected at any point within the player's area
                         }
-                        ctx.globalCompositeOperation = "source-over"; // Set composite operation to "source-over"
-            
-                        drawBackground(); // Draw the background image first
-                        
-                        ctx.globalCompositeOperation = "destination-over"; // Set composite operation to "destination-over" for the collision map
-                        drawCollisionMap();
-                        return false;
-
-                    case 'left':
-                        //check collision of upper border
-                        for(let i = 0; i < height; i++){
-                            const pixelData = ctx.getImageData(x, y + i, 1, 1).data;
-                            // Customize this check based on the color of your walls in the collision map image
-                            if (pixelData[0] === 0 && pixelData[1] === 0 && pixelData[2] === 0) {
-                                ctx.globalCompositeOperation = "source-over"; // Set composite operation to "source-over"
-                    
-                                drawBackground(); // Draw the background image first
-                                
-                                ctx.globalCompositeOperation = "destination-over"; // Set composite operation to "destination-over" for the collision map
-                                drawCollisionMap(); // Draw the collision map on top of the background image
-    
-                                ctx.globalCompositeOperation = "source-over"; // Set composite operation back to "source-over" for drawing the player
-                                drawPlayer(); // Draw the player on top of the collision map
-                                return true; // Collision detected at any point within the player's area
-                            }
-                        }
-                        ctx.globalCompositeOperation = "source-over"; // Set composite operation to "source-over"
-        
-                        drawBackground(); // Draw the background image first
-                        
-                        ctx.globalCompositeOperation = "destination-over"; // Set composite operation to "destination-over" for the collision map
-                        drawCollisionMap();
-
-                        return false;
-                    
-                    case 'right':
-                        //check collision of upper border
-                        for(let i = 0; i < height; i++){
-                            const pixelData = ctx.getImageData(x + width, y + i, 1, 1).data;
-                            // Customize this check based on the color of your walls in the collision map image
-                            if (pixelData[0] === 0 && pixelData[1] === 0 && pixelData[2] === 0) {
-                                ctx.globalCompositeOperation = "source-over"; // Set composite operation to "source-over"
-                    
-                                drawBackground(); // Draw the background image first
-                                
-                                ctx.globalCompositeOperation = "destination-over"; // Set composite operation to "destination-over" for the collision map
-                                drawCollisionMap(); // Draw the collision map on top of the background image
-    
-                                ctx.globalCompositeOperation = "source-over"; // Set composite operation back to "source-over" for drawing the player
-                                drawPlayer(); // Draw the player on top of the collision map
-                                return true; // Collision detected at any point within the player's area
-                            }
-                        }
-                        ctx.globalCompositeOperation = "source-over"; // Set composite operation to "source-over"
-        
-                        drawBackground(); // Draw the background image first
-                        
-                        ctx.globalCompositeOperation = "destination-over"; // Set composite operation to "destination-over" for the collision map
-                        drawCollisionMap();
-
-                        return false;
-                    
-                    default:
-                        return false;
+                    }
                 }
+                ctx.globalCompositeOperation = "source-over"; // Set composite operation to "source-over"
+                
+                drawBackground(); // Draw the background image first
+                
+                ctx.globalCompositeOperation = "destination-over"; // Set composite operation to "destination-over" for the collision map
+                drawCollisionMap();
+
+                return false; // No collision detected in the entire player area
+                
+                //till here no collisioin with map
+                // const uiCollision = _is_collision_ui(x,y);
+                // return uiCollision; // No collision detected in the entire player area
             }
 
+            
             function calculateScreenPosition() {
                 const zoomScale = scale;
                 screenX = playerX - canvas.width / (2 * zoomScale); // Adjust for zoom
@@ -453,34 +343,19 @@ characterImage.onload = () =>{
             window.addEventListener("keydown", (event) => {
                 let newX = playerX;
                 let newY = playerY;
-                let _movement_count = movementCount;
+
                 if (event.key === "ArrowLeft") {
                     newX -= playerSpeed;
                     currentOrientation = "left";
-                    if(previousOrientation !== currentOrientation){
-                        _movement_count = 0;
-                    }
-
                 } else if (event.key === "ArrowRight") {
                     newX += playerSpeed;
                     currentOrientation = "right";
-                    if(previousOrientation !== currentOrientation){
-                        _movement_count = 0;
-                    }
-
                 } else if (event.key === "ArrowUp") {
                     newY -= playerSpeed;
                     currentOrientation = "up";
-                    if(previousOrientation !== currentOrientation){
-                        _movement_count = 0;
-                    }
                 } else if (event.key === "ArrowDown") {
                     newY += playerSpeed;
                     currentOrientation = "down";
-                    if(previousOrientation !== currentOrientation){
-                        _movement_count = 0;
-                    }
-
                 }
                 else if (event.key === 'x') {
                     // Loop through the children of the UI container and check if the player is facing them and within proximity
@@ -521,26 +396,15 @@ characterImage.onload = () =>{
                         }
                     }
                 }
-                else{
-                    return;
-                }
                 calculateScreenPosition();
-                previousOrientation = currentOrientation;
-                const collision = isCollision(_playerX, _playerY,playerWidth,playerHeight);
-                if (!collision) {
-                    console.log('no collision');
-                    updateUIpositions();
+                updateUIpositions();
+
+                if (!isCollision(newX, newY)) {
                     playerX = newX;
                     playerY = newY;
-                    movementCount = _movement_count;
-                    movementCount += 1;
-                    movementCount %= no_of_frames;
-                    console.log(movementCount);
                     updateGameArea();
                 }
-                else{ //handle collision
-                    console.log('collision');
-                    updateUIpositions(reverse = true);
+                else{
                     switch(currentOrientation){
                         case 'up':
                             playerY += playerSpeed;
@@ -566,12 +430,12 @@ characterImage.onload = () =>{
                     }
                     
                 }
-
             });
 
+            // updateGameArea();
             requestAnimationFrame(updateGameArea);
+
         };
     };
 }
-
 
