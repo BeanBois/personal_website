@@ -1,15 +1,15 @@
 const canvas = document.getElementById("game-canvas");
 const ctx = canvas.getContext("2d",willReadFrequently=true);
 const uiContainer = document.getElementById("ui-container");
-
+console.log('index');
 
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-const playerWidth = 71*1.25;
-const playerHeight = 100 *1.25;
-const playerSpeed = 10;
+const playerWidth = 90;
+const playerHeight = 125;
+const playerSpeed = 20;
 const player_sprite_count = 12;
 const proximityDistance = 150
 const collisionProximity = 20;
@@ -63,12 +63,8 @@ const screenHeight = canvas.height;
 
 
 let playerX = canvas.width / 2 - playerWidth / 2;
-// let playerX = canvas.width / 2;
 
 let playerY = canvas.height / 2 - playerHeight / 2;
-// let playerY = canvas.height / 2;
-// let screenX = 0;
-// let screenY = 0;
 const stopThreshold = 0;
 const scale = 10;
 
@@ -89,60 +85,6 @@ const uiElementPositions = {};
     //we need to set the position of the element relative to the map
     //and then draw it on the screen
 
-// function drawChatBox(text) {
-//     const chatbox_img = new Image();
-//     const wpadding = 100;
-//     const hpadding = 50;
-//     const x = screenWidth - wpadding;
-//     const y = screenHeight - hpadding;
-//     const chatboxWidth = ScreenWidth - 2*wpadding;
-//     const chatboxHeight = 100;
-//     chatbox_img.src = 'public/pokemon_resources/chatbox.png';
-//     chatbox_img.onload = () => {
-//         ctx.drawImage(chatbox_img, x, y, chatboxWidth, chatboxHeight);
-//         const text_x = x + wpadding/2;
-//         const text_y = y + hpadding/2;
-//         ctx.font = '18px Arial';
-//         ctx.fillStyle = 'black';
-//         ctx.fillText(text, text_x, text_y);
-//     };
-// }
-
-
-// function interactTextUI(event, uiElement, interact_func=drawChatBox){
-//     const filepath = uiElement.dataset.filepath;
-//     const xhr = new XMLHttpRequest();
-//     let counter = 0;
-//     let lines = [];
-//     // Your _interactTextUI function
-//     const _interactTextUI = (event, lines) => {
-//         console.log(lines);
-//         if (event.key === 'x' && counter < lines.length) {
-//             const line = lines[counter];
-//             interact_func(line);
-//             counter += 1;
-//         }
-//         else if (event.key === 'x' && counter >= lines.length) {
-//             uiElement.removeEventListener("keydown", _interactTextUI); // Remove the event listener
-//             uiElement.removeEventListener("keydown", interactTextUI); // Remove the event listener
-            
-//         }
-//     };
-
-//     xhr.open('GET', filepath, true);
-
-//     xhr.onreadystatechange = function () {
-//         if (xhr.readyState === 4 && xhr.status === 200) {
-//             const fileContent = xhr.responseText;
-//             // Split the content by the delimiter (e.g., newline)
-//             lines = fileContent.split('\n');
-//             // Process each line
-//             counter = 0;
-//             window.addEventListener("keydown", _interactTextUI);
-//         }
-//     }
-//     xhr.send();
-// }
 
 // Iterate through the UI elements in the uiContainer
 Array.from(uiContainer.children).forEach((uiElement) => {
@@ -182,7 +124,8 @@ function sleep(ms) {
 //if exit is at img_coord = (x,y) in map, and we want exit to be at init_screen_player_pos
 //then x = canvas.width/2 - playerWidth / 2 - img_coord.x, y = canvas.height/2 - playerHeigth / 2 - img_coord.y
 const defaultSpawnPoint = uiElementPositions[exits[0]];
-
+console.log(defaultSpawnPoint);
+let spawnID = 'exit';
 
 const defaultSpawnPointWidth = () =>{
     const uiElement = document.getElementById(exits[0]);
@@ -194,39 +137,35 @@ const defaultSpawnPointHeight = () =>{
     const uiElement = document.getElementById(exits[0]);
     return uiElement.offsetHeight;
 }
-// let xUIRefPoint = defaultSpawnPoint.x ; //+ playerWidth/2 + uiWidth; //to make player appear at the center of the exit 
-// let yUIRefPoint = defaultSpawnPoint.y ; //to make player appear at the bottom of the exit
-
-//since ui positions represent scaled coords wrt to map, just need to offset by (screenWidth/2) , 
-//and (screenHeight/2) . bc that has been our assumption for the whole code. just have to undo this
-// assumption for the ui elements
 
 
-// playerX = playerX - defaultSpawnPointWidth()/2;
-// playerY = playerY - defaultSpawnPointHeight()/2;
-
-
-let initXUIRefPoint = defaultSpawnPoint.x ;
+let initXUIRefPoint = defaultSpawnPoint.x;
 let initYUIRefPoint =  defaultSpawnPoint.y;
 let xUIRefPoint = initXUIRefPoint;
 let yUIRefPoint = initYUIRefPoint;
 
 
-// const offsetX = xUIRefPoint /2 ;
-// const offsetY = yUIRefPoint  /2;
 //reupdate locations of ui wrt center of screen
 for(const id in uiElementPositions){
     const pos = uiElementPositions[id];
     const uiElement = document.getElementById(id);
-    const offsetX = pos.x - xUIRefPoint;
-    const offsetY = pos.y - yUIRefPoint;
+    
+    const percentageShiftX = ((pos.x-xUIRefPoint) / (backgroundImage.width * scale));
+    const percentageShiftY = ((pos.y- yUIRefPoint) / (backgroundImage.height * scale));
+    const offsetX = backgroundImage.width * scale * percentageShiftX;
+    const offsetY = backgroundImage.height * scale * percentageShiftY;
+    // const offsetX = pos.x - xUIRefPoint;
+    // const offsetY = pos.y - yUIRefPoint;
     //edit this
     uiElementPositions[id] = {
-        x :  offsetX + canvas.height/2 + playerHeight/2,
-        y :  offsetY +canvas.width/2 - playerWidth/2
-    }
+        x : offsetX + canvas.width/2 - playerWidth/2,
+        y :  offsetY + canvas.height/2 + playerHeight/2 //l
+    }    
 
 }
+
+
+
 
 //main functions
 characterImage.onload = () =>{ 
@@ -341,16 +280,16 @@ characterImage.onload = () =>{
                         const _uiPosition = uiElementPositions[uiElement.id];
                         switch(currentOrientation){
                             case 'up':
-                                _uiPosition.x -= playerSpeed;
-                                break;
-                            case 'down':
-                                _uiPosition.x += playerSpeed;
-                                break;
-                            case 'left':
                                 _uiPosition.y -= playerSpeed;
                                 break;
-                            case 'right':
+                            case 'down':
                                 _uiPosition.y += playerSpeed;
+                                break;
+                            case 'left':
+                                _uiPosition.x -= playerSpeed;
+                                break;
+                            case 'right':
+                                _uiPosition.x += playerSpeed;
                                 break;
                         }
                         uiElementPositions[uiElement.id] = _uiPosition;
@@ -360,16 +299,16 @@ characterImage.onload = () =>{
                         const _uiPosition = uiElementPositions[uiElement.id];
                         switch(currentOrientation){
                             case 'up':
-                                _uiPosition.x += playerSpeed;
-                                break;
-                            case 'down':
-                                _uiPosition.x -= playerSpeed;
-                                break;
-                            case 'left':
                                 _uiPosition.y += playerSpeed;
                                 break;
-                            case 'right':
+                            case 'down':
                                 _uiPosition.y -= playerSpeed;
+                                break;
+                            case 'left':
+                                _uiPosition.x += playerSpeed;
+                                break;
+                            case 'right':
+                                _uiPosition.x -= playerSpeed;
                                 break;
                         }
                         uiElementPositions[uiElement.id] = _uiPosition;
@@ -384,12 +323,12 @@ characterImage.onload = () =>{
                 const width = uiElement.offsetWidth;
                 const height = uiElement.offsetHeight;
 
-                uiElement.style.top = `${x}px`;
-                uiElement.style.left = `${y}px`;
+                uiElement.style.top = `${y}px`;
+                uiElement.style.left = `${x}px`;
 
                 
                 img.onload = () => {
-                    ctx.drawImage(img, x, y, width, height);
+                    ctx.drawImage(img, y, x, width, height);
                 };
             }
 
@@ -708,7 +647,6 @@ characterImage.onload = () =>{
                 let _movement_count = movementCount;
                 // if player interacting with text
                 if (isInteractingWithText && event.key === 'x') {
-                    await sleep(300);
             
                     if (text_counter < texts.length) {
                         text_counter += 1;

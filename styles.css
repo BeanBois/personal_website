@@ -4,6 +4,7 @@ body {
 }
 
 #canvas-container {
+    background-color: black;
     position: relative;
 }
 
@@ -65,10 +66,10 @@ body {
     position: absolute;
     /* background-image: url('/public/unown_alpha.png'); */
     background-size: cover;
-    /* width: 100px; */
-    /* height: 100px; */
-    width : 20px;
-    height : 20px;
+    width : 100px;
+    height : 100px;
+    top: 250px;
+    left : 300px;
 }
 
 
@@ -96,10 +97,8 @@ body {
 
 #mudkip{
     position: absolute;
-    /* left: 250px; */
-    /* top: 700px; */
     left : 350px;
-    top : 800px;
+    top : 800px; 
 }
 
 /* exits */
@@ -107,16 +106,10 @@ body {
 #exit{
     position : absolute;
     /* 129 / 272, 144 /272, 117/128, 122/128 */
-    /* top : 1126px; */
-    /* left : 1030px;/ */
-    width : 155px;
+    width : 120px;
     height : 5px;
-    /* top : 1290px; */
-    /* left : 1170px; */
-    top : 1170px;
-    left: 1290px;
-    /* width : 5%; */
-    /* height : 4% */
+    top : 1200px;
+    left: 1300px;
 
 }
 
@@ -124,6 +117,7 @@ body {
 @font-face {
     font-family: 'MyCustomFontv1';
     src: url('/public/fonts/chatbox_fontsv1.ttf') format('truetype');
+    height : 50%;
   }
   @font-face {
     font-family: 'MyCustomFontv2';

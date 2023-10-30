@@ -5,16 +5,17 @@ body {
 
 #canvas-container {
     position: relative;
+    background-color: black;
+
 }
 
-#canvas {
-    border: 1px solid black;
-}
 
 #ui-container {
     position: absolute;
-    top: 100px;
-    left: 100px;
+    top:0px;
+    left : 0px;
+    width : 100%;
+    height: 100%;
 }
 
 #game-container {
@@ -49,6 +50,12 @@ body {
     position: absolute;
 }
 
+.sliding-window {
+    position: absolute;
+    width: 20%; /* Initial width of the sliding window */
+    height: 100%;
+    background: rgba(255, 255, 255, 0.5); /* Background color for the window */
+}
 
 /* final year project styling */
 #final-year-project{
@@ -83,14 +90,51 @@ body {
 
 /* exits */
 
+#exit3{
+    position : absolute;
+    /* 25 / 112, 33 /112, 15/256, 20/256 */
+    width : 140px;
+    height : 5px;
+    top : 130px;
+    left : 240px;
+    /* top : 2210px; */
+    /* left: -1850px; */
+    padding: 0%;
+
+}
+#exit2{
+    position : absolute;
+    /* 100 / 112, 105 /112, 122/256, 127/256 */
+    height : 140px;
+    width : 5px;
+    top : 1220px;
+    left : 1000px;
+    /* top : 3000px; */
+    /* left: -770px; */
+    padding: 0%;
+}
+
+#exit1{
+    position : absolute;
+    /* 25 / 112, 30 /112, 170/256, 185/256 */
+    height : 140px;
+    width : 5px;
+    top : 1700px;
+    left : 250px;
+    /* top : 2250px; */
+    /* left: -290px; */
+    padding: 0%;
+
+
+}
 #exit{
     position : absolute;
-    /* 129 / 272, 144 /272, 117/128, 122/128 */
-    top : 1126px;
-    left : 1030px;
-    width : 155px;
+    /* 50 / 112, 65 /112, 247/256, 252/256 */
+    width : 140px;
     height : 5px;
-
+    top : 2470px;
+    left: 490px;
+    padding: 0%;
 }
 
 /* text box styling */

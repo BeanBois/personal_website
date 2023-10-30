@@ -5,16 +5,19 @@ body {
 
 #canvas-container {
     position: relative;
+    background-color: black;
 }
 
 #canvas {
-    border: 1px solid black;
+    /* border: 1px solid black; */
 }
 
 #ui-container {
     position: absolute;
-    top: 100px;
-    left: 100px;
+    top:0px;
+    left : 0px;
+    width : 100%;
+    height: 100%;
 }
 
 #game-container {
@@ -49,6 +52,12 @@ body {
     position: absolute;
 }
 
+.sliding-window {
+    position: absolute;
+    width: 20%; /* Initial width of the sliding window */
+    height: 100%;
+    background: rgba(255, 255, 255, 0.5); /* Background color for the window */
+}
 
 /* final year project styling */
 #final-year-project{
@@ -65,30 +74,30 @@ body {
 #torchic{
     position: absolute;
     left: 100px;
-    top: 400px;
+    top: 900px;
 }
 
 #treecko{
     position: absolute;
     left: 200px;
-    top: 400px;
+    top: 900px;
 }
 
 #mudkip{
     position: absolute;
     left: 150px;
-    top: 500px;
+    top: 1000px;
 }
 
 /* exits */
 
 #exit{
     position : absolute;
-    /* 129 / 272, 144 /272, 117/128, 122/128 */
-    top : 1126px;
-    left : 1030px;
+    /* 80 / 176, 95 /176, 128/144, 133/144 */
     width : 155px;
     height : 5px;
+    top : 1280px;
+    left: 800px;
 
 }
 
