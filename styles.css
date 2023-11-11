@@ -345,7 +345,9 @@ body {
 /* text box styling */
 @font-face {
     font-family: 'MyCustomFontv1';
-    src: url('/public/fonts/chatbox_fontsv1.ttf') format('truetype');
+    /* src: url('/public/fonts/chatbox_fontsv1.ttf') format('truetype'); */
+    src: url('pkmnrseu.ttf') format('truetype');
+
     height : 50%;
   }
   @font-face {
