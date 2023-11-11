@@ -347,6 +347,11 @@ body {
     font-family: 'MyCustomFontv1';
     /* src: url('/public/fonts/chatbox_fontsv1.ttf') format('truetype'); */
     src: url('pkmnrseu.ttf') format('truetype');
+    src: url('PokemonRS.woff2') format('woff2'),
+        url('PokemonRS.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
 
     height : 50%;
   }
