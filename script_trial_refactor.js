@@ -1,3 +1,4 @@
+//alerts 
 
 //needs to be chrome
 var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
@@ -6,6 +7,40 @@ var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator
 if (!isChrome) {
     alert("For compatibility, we require Google Chrome. Please switch to Chrome for the intended experience.");
 }
+
+// Set full screen mode for best experience -- could be better
+// function toggleFullscreenAlert() {
+//     const fullscreenConfirmation = confirm("Do you want to enter fullscreen mode? This is for a better experience");
+    
+//     if (fullscreenConfirmation) {
+//         const element = document.documentElement;
+
+//         if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+//             if (element.requestFullscreen) {
+//                 element.requestFullscreen();
+//             } else if (element.mozRequestFullScreen) { // Firefox
+//                 element.mozRequestFullScreen();
+//             } else if (element.webkitRequestFullscreen) { // Chrome, Safari and Opera
+//                 element.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+//             } else if (element.msRequestFullscreen) { // IE/Edge
+//                 element.msRequestFullscreen();
+//             }
+//         } else {
+//             if (document.exitFullscreen) {
+//                 document.exitFullscreen();
+//             } else if (document.mozCancelFullScreen) {
+//                 document.mozCancelFullScreen();
+//             } else if (document.webkitExitFullscreen) {
+//                 document.webkitExitFullscreen();
+//             } else if (document.msExitFullscreen) {
+//                 document.msExitFullscreen();
+//             }
+//         }
+//     }
+// }
+
+// Example: Trigger fullscreen when the alert is confirmed
+// toggleFullscreenAlert();
 
 const canvas = document.getElementById("game-canvas");
 const ctx = canvas.getContext("2d", {willReadFrequently : true});
@@ -863,6 +898,7 @@ const onLoadMain = () =>{
                                         if (response.status === 200) {
                                             console.log("response received:", response);
                                             response.text().then(data => {
+                                                console.log("data received:", data);
                                                 const lines = data.split('\n');
                                                 for (let i = 0; i < lines.length; i++) {
                                                     if (lines[i] !== '') {
