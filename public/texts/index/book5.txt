@@ -1,0 +1,12 @@
+I now attempt to give my reasons as to why the agent had failed.
+Firstly, the way that I had encoded the actions severely hindered exploration for the agent.
+Secondly, my visual system was too naïve. Due to me choosing to omit majority of the image information, 
+the agent could not use the image cues to geo-locate the enemy or even orientate itself to face the enemy for a duel; 
+and as such what usually happens is that the agent does not orient itself towards to enemy when it is being shot at. 
+If a more sophisticated visual model is seen, I can potentially see the agent being able to shoot back at the enemy 
+when it is being shot at.
+Thirdly, the lack of sound cues also made geo-locating enemy difficult. By omitting sound cues, 
+I have taken away the information that the agent could have used to preempt the enemy. 
+Sound cues gives a sense of where another player is going and their proximity, without taking the risk of being seen.
+With such information, the agent might be able to take on a more strategic approach, 
+as compared to the direct approach it has taken here.

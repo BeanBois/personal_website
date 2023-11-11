@@ -1,0 +1,8 @@
+now we have everythng set up design time
+
+for the csgo project i was thinking we use csgo art to design the place:
+EG :
+armour
+weapon --ak, m4, knife
+accessories -- bomb, map design elements?
+neural network image to depict the netowrk ad some ibm style statue to match it

@@ -1,0 +1,5 @@
+So firstly, the aim of my project was to create a starting point for software engineers 
+who share the same interest as I am, which is to build an AI playing bot for 
+Counter Strike: Global Offensive. Many works have been done prior to mine, 
+but they have focused on using behavioural cloning, and have not taken the 
+Reinforcement Learning approach that I have taken in this project.

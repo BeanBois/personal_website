@@ -1,0 +1,10 @@
+So for my project, I will be attempting to train an AI bot that is capable of 
+playing Terrorist in a 1v1 Post Plant Situation -- whereby the bomb has been planted by the AI bot 
+and now the AI bot must secure the bomb and prevent the enemy from defusing it.
+We first start of with our hypothesis about how we are going to solve the game
+I start out with the believe that CSGO can be tackled as a Reinforcement Learning problem, 
+reason being its game-like nature. Reinforcement Learning has been a popular approach to tackle games.
+I also believe that methodologies used in robotics task can be applicable in tackling the CSGO task, 
+if it was to be formularised as a Reinforcement Learning Problem
+Getting inspiration from robotic task, we can then attempt to tackle the CSGO problem
+

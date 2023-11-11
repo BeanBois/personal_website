@@ -1,0 +1,12 @@
+To further enhance our Reinforcement Learning agent, we have also utilised Goals, 
+which is a concept from academic research with regards to a Universal Value Function Approximator. 
+A goal can be thought of as an 'bonus achievement' that the agent can attempt to achieve apart from its original goal. 
+The purpose of the goal is to allow the agent to learn a more general task, and thus achieve generality, 
+during training by doing specific task. 
+Its intuition can be thought of as a separate reference point for the agent to refer to for each interaction episode.
+With a separate reference point, the agent can better objectify the quality of its action as 
+it now has 2 dimension of reference, 1 being its initial task, while the other being the goal. 
+We treat goal as predicates, and as such implement it as a function-pointer, and a index for referencing.
+
+<Goal-IMG>
+

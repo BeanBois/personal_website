@@ -1,0 +1,18 @@
+Fourthly, I should have further broken down the task, so that the agent is able to learn more effectively.
+This is evident in the fact that it has not learnt to stop the enemy from defusing the bomb. 
+I should have started out with simpler tasks, and progress the complexity of the task. 
+For example, I could have isolated ‘stopping bomb defuse’ as a individual task, 
+then have the agent learn this task by having it run through multiple bomb defuse scenarios. 
+After the agent has learnt the bomb defuse scenario, I can transfer this agent into a more complex task, 
+like this, and have it learn this task. 
+This potentially might lead to better performance, but it is also to note that this 
+can lead to unexpected behaviours as well. 
+For example, due to the many interactions with bomb defuse scenarios, the agent might be 
+biased to play around the bomb, and this can limit exploration.
+Lastly, the neural network I had used is too naive for the current task and 
+this is evident in the graph showing policy loss throughout training. The policy loss 
+throughout training has been 0, and I initially thought that it just needed time to explore,
+but up until the end, it remains as 0, and this is very concerning. Below shows the graph of 
+the policy loss with respect to epoch
+
+policy loss - img

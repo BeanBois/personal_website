@@ -1,0 +1,23 @@
+This is the design of the solution. 
+<Design-Solution-IMG> (want to make this a sprite)
+
+We have 5 entities in play -- being the Agent, the Virtual Environment, the Player, the Spectator and the Game. 
+Since the game is just the CSGO game instance, I will not elaborate any further on it. I want to then introduce the 
+4 entities and their respective responsibility.
+The Agent is meant to interact with the Virtual Environment and learn the task. 
+Since the Agent is complex, I will talk about it separately so as to not be sidetracked.
+The Virtual Environment acts as an interface for the Agent to communicate with the Game. 
+This allows the algorithm to indirectly interact and learn the task. 
+The Virtual Environment has the key role of ensuring that the information that the Agent works with is suitable for the 
+Agent, and as such it does majority of the information processing. 
+I want to take the chance here to say that since I had follow the OpenAI convention, and have done a decent job keeping 
+the code clean and understandable given the complexity of my set-up, 
+I feel confident that this code can be reused by interested individuals who seek to tackle the problem.
+The Player is one of the main servers supporting the Virtual Environment. 
+It has 2 task -- first it decodes action indirectly sent to it (via the Virtual Environment), 
+and then apply it in the game. 
+Second, it is also responsible for running the YOLOV5 model to detect enemies 
+and communicate back to the Agent indirectly to inform the Agent of enemy presence.
+The Spectator is another main servers supporting the Virtual Environment. 
+It mainly communicates with the Agent indirectly to respond to any request the 
+Agent make about the requested Game State Integration information.

@@ -1,0 +1,11 @@
+We finally move onto results. What you have been watching a sub-clip of a 100 games played 
+by the final agent and against an enemy bot with 'Hard' difficulty. 
+As we can see, the agent is not very sophisticated, but on a closer look, 
+it is actually exploiting some of the characteristic of the bot. 
+For example, it abuses the terrible aim of the bot by constantly moving around, 
+so that the agent is able to buy time for the bomb to explode. This is a really interesting behaviour, 
+as I had initially thought that the bot would have just stayed at the location 
+where the bomb is planted in order to ambush the enemy. 
+However, all in all it is considered a failure to me, 
+as there is no real strategic value in its action
+

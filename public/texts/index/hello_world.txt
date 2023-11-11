@@ -1,0 +1,25 @@
+Hey!
+
+Welcome to my website!
+
+This is part of my personal project to build some sort of interactive platform to showcase my personal projects
+
+If one is familiar with playing the game of pokemon on a laptop this main be intuitive
+
+But for the benefit of doubt, let me simply go through how one can navigate this website
+
+One can move around the map with the arrow keys, and interact with UI elements
+
+To interact with UI elements, move your avatar near them, face them, then press X, 
+
+Generally interactions require user to only press x to continue, but one may be prompted to give a response,
+
+as of now, i will be allowing yes/no responses, but in the future i endeavour to accept open-ended response
+
+for potentially more interactive user experience like leaving feedbacks for the environment
+
+For now, this is how it is right now! 
+
+With all regards...
+
+Hello World!

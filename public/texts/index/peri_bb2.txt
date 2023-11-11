@@ -1,0 +1,31 @@
+I now talk about the Agent's implementation under the hood. 
+Firstly the agent uses the Reinforcement Learning method called Deep Deterministic Policy Gradient.
+DDPG-IMG
+
+DDPG is used as it deals well with large action space. 
+At the same time, DDPG could be paired along with other methods that can optimise learning. 
+Finally DDPG has been tested to be successful in robotics tasks, and as such 
+I am confident in its ability to 'teach' the agent how to play CSGO in a 1v1 Post Plant.
+Within the DDPG, the actor uses a Asymmetric Actor Critic (AAC) Network.
+
+AAC-IMG
+
+I have decided on using Asymmetric Actor Critic model to speed up convergence by exploiting the difference in Observability. 
+We can understand observability as 'what the players can see right now'. 
+It is no surprise that each participating player in the game only has direct access to information of its own, 
+and since its own information is insufficient to give full information about the current state, 
+we consider the participating player to have Partial Observability. 
+As a spectator on another hand, you will have direct access to all players' information, 
+and as such you will have full observability. Since we are running local matches, 
+we have access to the full game data by being a Spectator. Since Partial-Observability 
+is already present in the player, it is not difficult to generate both Complete 
+and Partial information, and use them in the Asymmetric Actor Critic model.
+Lastly, to train the model we have decided to use Hindsight Experience Replay. 
+Hindsight Experience Replay basically allow us to simplify our rewards as a Zero-Sum game, 
+as it is able to allow efficient training in a environment 
+where rewards are sparse and delayed -- which is the case for Zero-Sum game. 
+Hindsight Experience Replay is basically a memory buffer that the agent can store experienced interactions; 
+and the agent can at a later time sample from this memory buffer to generate interactions for learning. 
+Implementation of Hindsight Experience Replay is straightforward and as such I will not include a Pseudocode.
+
+

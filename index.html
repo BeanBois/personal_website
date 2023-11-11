@@ -5,18 +5,69 @@
 </head>
 <body>
     <div id="canvas-container">
+        <!-- <div class="sliding-window"></div> -->
         <canvas id="game-canvas"></canvas>
-        <div class="sliding-window"></div>
         <div id="ui-container">
             <!-- UI elements go here -->
-            <img src="/public/pokemon_resources/unown_alpha.png" id="final-year-project" class="final-year-project"/>
-            <img src="/public/dolls/Doll_Treecko_III.png" id="treecko" class="doll_decor"/>
-            <img src="/public/dolls/Doll_Torchic_III.png" id="torchic" class="doll_decor"/>
-            <img src="/public/dolls/Doll_Mudkip_III.png" id="mudkip" class="doll_decor" data-filepath="public/texts/hello_world.txt"/>
-            <input type="submit" id="exit" value="exit" class="submit"/>
+            
+            <!--Layer 1 bottom most layer-->
+            
+                <!-- mats -->
+                <img src="/public/mat/SpikesMatSprite.png" id="left_mat" data-walkable="true" data-response=""/>
+                <img src="/public/mat/SpikesMatSprite.png" id="right_mat" data-walkable="true" data-response=""/>
+            
+                <!-- tables -->
+                <img src="/public/desk/ComfortDeskSprite_v1.png" id="table1" class="leaf_table_vert" data-walkable="false" data-response=""/>
+                <img src="/public/desk/ComfortDeskSprite_h.png" id="table2" class="leaf_table_hori" data-walkable="false" data-response=""/>
+                <img src="/public/desk/ComfortDeskSprite_h.png" id="table3" class="leaf_table_hori" data-walkable="false" data-response=""/>
+                <img src="/public/desk/ComfortDeskSprite_v.png" id="table4" class="leaf_table_vert" data-walkable="false" data-response=""/>
+
+                <!-- boards and posters -->
+                <img src="/public/csgo_materials/ak47_1c.png" id="ak47_1" class="guns" data-walkable="false" data-response=""/>
+                <img src="/public/csgo_materials/ak47_2c.png" id="ak47_2" class="guns" data-walkable="false" data-response=""/>
+                <img src="/public/csgo_materials/ak47_3c.png" id="m4a1_1" class="guns" data-walkable="false" data-response=""/>
+                <img src="/public/csgo_materials/ak47_4c.png" id="m4a1_2" class="guns" data-walkable="false" data-response=""/>
+                <img src="/public/pokemon_resources/blackboard_h.png" id='main_bb' data-walkable="false" data-response=""/>
+                <img src="/public/pokemon_resources/blackboard_v.png" id='peri_bb1' data-walkable="false" data-response="public/texts/index/peri_bb1.txt"/>
+                <img src="/public/pokemon_resources/blackboard_v.png" id='peri_bb2' data-walkable="false" data-response="public/texts/index/peri_bb2.txt"/>
+                
+                <!-- Finally welcome mat, hello sign and exit -->
+                <img src="/public/pokemon_resources/sign.png" id='csgo_aim_sign' data-walkable="false" data-response="public/texts/index/csgo_aim.txt"/>
+                <img src="/public/pokemon_resources/sign.png" id='csgo_preface_sign' data-walkable="false" data-response="public/texts/index/csgo_preface.txt"/>
+                <img src="/public/pokemon_resources/sign.png" id='hello_sign' data-walkable="false" data-response="public/texts/index/hello_world.txt"/>
+                <img src="/public/pokemon_resources/welcome_mat.png" id='welcome_mat' data-walkable="true" data-response=""/>
+                <input type="submit" id="exit" value="exit" class="submit" data-walkable="true" data-response=""/>
+            
+            
+            <!-- layer 2 -->
+
+                <!-- on table stuff, dolls, books -->
+                <img src='/public/dolls/Doll_Pikachu_III.png' id="pikachu" class="dolls" data-walkable="false" data-response=""/>
+                <img src='/public/dolls/Doll_Togepi_III.png' id="togepi" class="dolls" data-walkable="false" data-response=""/>
+                <img src='/public/pokemon_resources/book_v.png' id="book1" class="book_v" data-walkable="false" data-response="public/texts/index/book1.txt"/>
+                <img src='/public/pokemon_resources/book_v.png' id="book2" class="book_v" data-walkable="false" data-response="public/texts/index/book2.txt"/>
+                <img src='/public/pokemon_resources/book_v.png' id="book3" class="book_v" data-walkable="false" data-response="public/texts/index/book3.txt"/>
+                <img src='/public/pokemon_resources/book_v.png' id="book4" class="book_v" data-walkable="false" data-response="public/texts/index/book4.txt"/>
+                <img src='/public/pokemon_resources/book_h.png' id="book5" class="book_h" data-walkable="false" data-response="public/texts/index/book5.txt"/>
+                <img src='/public/pokemon_resources/book_h.png' id="book6" class="book_h" data-walkable="false" data-response="public/texts/index/book6.txt"/>
+
+                <!-- tech equipments -->
+                <img src='/public/pokemon_resources/super_computer_c.png' id="super_computer" data-walkable="false" data-response=""/>
+                <img src='/public/pokemon_resources/gpu.png' id="gpu1" class="gpu" data-walkable="false" data-response=""/>
+                <img src='/public/pokemon_resources/gpu.png' id="gpu2" class="gpu" data-walkable="false" data-response=""/>
+                <img src='/public/pokemon_resources/gpu.png' id="gpu3" class="gpu" data-walkable="false" data-response=""/>
+                <img src='/public/pokemon_resources/gpu.png' id="gpu4" class="gpu" data-walkable="false" data-response=""/>
+
+       
+                <!-- furnitures -->
+                <img src='/public/pokemon_resources/table_monitor_c.png' id="table_monitor" data-walkable="false" data-response=""/>
+                <img src='/public/pokemon_resources/tv_c.png' id="tv" data-walkable="false" data-response=""/>
+                <img src='/public/pokemon_resources/architect_table.gif' id="architect_table" data-walkable="false" data-response=""/>
+                <img src='/public/pokemon_resources/right_sofa.gif' id="right_sofa" data-walkable="false" data-response=""/>
+                <img src='/public/pokemon_resources/stool.gif' id="stool" data-walkable="false" data-response=""/>
 
         </div>
     </div>
-    <script src="script_trial.js"></script>
+    <script src="script_trial_refactor.js"></script>
 </body>
 </html>

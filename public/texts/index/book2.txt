@@ -1,0 +1,13 @@
+We then formularise CSGO as a Reinforcement Learning Agent. 
+Firstly we treat each round of the match as a Zero-sum Game,
+meaning that either the Agent wins and the enemy loses or vice versa. This will be crucial in the later parts.
+To represent states, I have utilised the Game State Integration, that allows me to fetch live match information, 
+and have utilised YOLOV5 to detect enemies on screen so that the agent can detect enemies while playing the game. 
+To implement actions, we encode actions as binary for our agents to 'learn' with it, 
+and these actions will be decoded into respective mouse and keyboard inputs. 
+
+The 2 images above shows the Definition of States and Action.
+
+<States-img>
+
+<Action-img>

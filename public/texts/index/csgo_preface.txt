@@ -1,0 +1,17 @@
+So the first project that I will like to present will be my final year project
+
+My final year project was one where i chose to self-proposed, meaning I have full responsibility over it
+
+In summer, i have been thinking about ways that I could build a Reinforcement Learning agent to play CSGO
+
+or Counter Strike: Global Offensive, a first person player shooting game. 
+
+Thus, a small summer project that i started on a wimp became something really important
+
+To be honest, it was way harder than i expected, and i will be lying if I said it can play well
+
+However, it did serve as a really good experience overall, and mistakes made showed me where i can improve
+
+There is more to be said about the project, so do spend your time exploring the place! 
+
+
