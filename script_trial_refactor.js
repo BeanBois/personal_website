@@ -638,8 +638,8 @@ const onLoadMain = () =>{
                     const playerB = y + playerHeight;
                     // Define the proximity range for UI collision
                     const proximity = proximityRange;
-                    console.log('ui : ',uiLeft,uiTop, uiRight, uiBottom);
-                    console.log('player : ', playerL, playerT, playerR, playerB)
+                    // console.log('ui : ',uiLeft,uiTop, uiRight, uiBottom);
+                    // console.log('player : ', playerL, playerT, playerR, playerB)
             
                     // Check if the player's bounding box overlaps with the UI element considering proximity
                     switch (currentOrientation) {
