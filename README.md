@@ -2,7 +2,7 @@
 
 ## This is a personal project that i started around September 2023
 
-### Basically it was the idea of an interactive website that uses the pokemon interface for users to interact with the website
+ Basically it was the idea of an interactive website that uses the pokemon interface for users to interact with the website
 ### The motivation mainly come from creative videos that i have seen of cool powerpoint presentations utilising the pokemon theme to present their projects/works
 ### Thus similarly, i created a website that i will use to 'present' my projects to people, kind of like an exhibition
 
