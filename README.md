@@ -1,4 +1,4 @@
-# pp_website
+# personal_project_website
 
 ## This is a personal project that i started around September 2023
 
