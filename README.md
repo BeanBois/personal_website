@@ -1,4 +1,4 @@
-# personal_project_website
+# Beepo's Poke-Exhibition
 
 ## This is a personal project that i started around September 2023
 
