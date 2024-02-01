@@ -5,7 +5,7 @@ var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator
 
 // Display alert if not using Chrome
 if (!isChrome) {
-    alert("For compatibility, we require Google Chrome. Please switch to Chrome for the intended experience.");
+    alert("For compatibility, we require Google Chrome. Please switch to Chrome for the intended experience. If screen is black, do refresh and it will work");
 }
 
 // Set full screen mode for best experience -- could be better
