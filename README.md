@@ -8,8 +8,17 @@
 
 ## Current Status
 
- As of now, functionality is failry stable, those there is concern with latenecy, epsecially with the UI interactions. I am looking into this
- The project that i have presented right now is my final year project, which is a self playing CSGO AI.
- Furthermore, the current layout is still fairly simple, and i look to add more animations to make the website more captivating. Designs of 
- layout might change in the future too. I do find inspirations from exhibitons in London, but right now i am busy with interviews and as such have held this project off
- looking to pick it up by mid-end December! 
+Update! the csgo area is still under construction, but I have set up a website
+that presents the project in a concise manner here:
+
+link -> 
+
+Additionally, a new area has opened up, which presents some of the poems that i have wrote. I am currently working to display the chatbox in a big chatbox, but for now 
+do bear with the mini chatbox! with the incoming of big chatbox, the formatting 
+of the poems (which is crucial) will be visually available!
+
+right now only this area is available. I am currently learning German, AI and Quant Physics, but when i have free time I will be working on this website so do be patient as i have alot of ideas for this website!
+
+Current link :
+
+
