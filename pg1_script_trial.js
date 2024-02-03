@@ -384,8 +384,10 @@ const onLoadMain = () =>{
                 const chatboxWidth = screenWidth - 2*wpadding;
                 const y = screenHeight - hpadding - chatboxHeight;
                 chatbox_img.src = 'public/pokemon_resources/chatbox.png';
-                ctx.globalCompositeOperation = "source-over";
                 chatbox_img.onload = () => {
+                    console.log('load chatbox');
+                    ctx.globalCompositeOperation = "source-over";
+
                     ctx.drawImage(chatbox_img, x, y, chatboxWidth, chatboxHeight);
                     const text_x = x + wpadding/2;
                     const text_y = y + hpadding/2;
@@ -460,12 +462,18 @@ const onLoadMain = () =>{
                 ctx.globalCompositeOperation = "source-atop"; // Set composite operation to "destination-over" for the collision map
                 
                 // drawPlayer(); // Draw the player on top of the collision map
-                drawUI();         
-                // Draw the player
-                drawPlayer();
+
                 if(isInteractingWithText && text_counter < texts.length){
+                    console.log('drawing chatbox');
+                    ctx.globalCompositeOperation = "source-atop"; // Set composite operation to "source-over"
                     drawChatBox(texts[text_counter]);
                 }
+                else{
+                    console.log('drawing UI');
+                    drawUI();         
+                    // Draw the player
+                }
+                drawPlayer();
 
                 requestAnimationFrame(updateGameArea);
             }
