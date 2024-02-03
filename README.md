@@ -9,9 +9,9 @@
 ## Current Status
 
 Update! the csgo area is still under construction, but I have set up a website
-that presents the project in a concise manner here:
+that presents the project in a concise manner below : 
 
-link -> 
+link -> https://beanbois.github.io/CSGO_AI/
 
 Additionally, a new area has opened up, which presents some of the poems that i have wrote. I am currently working to display the chatbox in a big chatbox, but for now 
 do bear with the mini chatbox! with the incoming of big chatbox, the formatting 
@@ -19,6 +19,6 @@ of the poems (which is crucial) will be visually available!
 
 right now only this area is available. I am currently learning German, AI and Quant Physics, but when i have free time I will be working on this website so do be patient as i have alot of ideas for this website!
 
-Current link :
+Current link : https://beanbois.github.io/pp_website/
 
 
