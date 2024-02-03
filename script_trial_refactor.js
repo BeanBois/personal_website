@@ -1,3 +1,10 @@
+//Purpose: currently index is a mess, so we will redirect user to page1 html 
+// which is cleaner at the moment
+window.onload = function() {
+    // Replace '<url>' with the desired URL
+    window.location.href = 'page1.html';
+};
+
 //alerts 
 
 //needs to be chrome
@@ -60,9 +67,7 @@ const proximityDistance = 100;
 const collisionProximity = 20;
 
 const gender = 'boy';
-// const playerUI = document.getElementById("player");
 const characterImage = new Image();
-// characterImage.src =playerUI.src;
 
 characterImage.src =`public/player/player_${gender}_sprite_transparent.png`;
 const orientation_map ={
@@ -176,7 +181,8 @@ function getLocationFromCookie() {
     }
     return null; // Cookie not found
 }
-let locationData = getLocationFromCookie();
+// let locationData = getLocationFromCookie();
+let locationData = null;
 console.log(locationData);
 let xUIRefPoint = initXUIRefPoint;
 let yUIRefPoint = initYUIRefPoint;
@@ -197,10 +203,6 @@ for(const id in uiElementPositions){
     if(id === 'peri_bb1' || id === 'peri_bb2'){
         const x_shift = xUIRefPoint - initXUIRefPoint;
         offsetY += x_shift*0.2;
-        // const element = document.getElementById(id);
-        // offsetY -= element.offsetHeight*(1-0.2);
-        // offsetY +=100;
-        // offsetY += playerHeight;
     }
     uiElementPositions[id] = {
         x : offsetX + canvas.width/2 - playerWidth/2,
@@ -396,7 +398,6 @@ const onLoadMain = () =>{
             }
 
             function drawUI() {
-                // console.log('draw');
                 const uiElements = uiContainer.children; //for now
                 if (uiElements.length === 0) {
                     return; // No UI elements to draw
@@ -484,9 +485,8 @@ const onLoadMain = () =>{
             }
             // let lastFrameTime = 0;
             function updateGameArea(timestamp) {
-                // if (timestamp - lastFrameTime >= frameDelay) {
                 clearCanvas();
-                    
+                
                 ctx.globalCompositeOperation = "source-over"; // Set composite operation to "source-over"
                 // drawCollisionMap();
                 
@@ -494,7 +494,7 @@ const onLoadMain = () =>{
                 ctx.globalCompositeOperation = "source-atop"; // Set composite operation to "destination-over" for the collision map
                 
                 // drawPlayer(); // Draw the player on top of the collision map
-                drawUI();                
+                drawUI();         
                 // Draw the player
                 drawPlayer();
                 if(isInteractingWithText && text_counter < texts.length){
@@ -524,6 +524,7 @@ const onLoadMain = () =>{
                         }
                         break;
                     case 'down':
+                        // console.log('down');
                         // Check if the player's bottom border collides with the UI's top border and they are aligned horizontally
                         if (playerBottom + threshold >= itemTop && playerBottom <= itemTop &&
                             ( (playerLeft >= itemLeft && playerRight <= itemRight) || (playerRight >= itemLeft && playerRight <= itemRight) || (playerLeft >= itemLeft && playerLeft <= itemRight) ) ) {
@@ -680,10 +681,11 @@ const onLoadMain = () =>{
                 return false; // No 
             }
 
+            //collision check is very localised
             function isCollision(x, y, width, height) {
-                ctx.globalCompositeOperation = "source-over"; // Set composite operation to "source-over"
-                drawCollisionMap();
-                ctx.willReadFrequently = true;
+                // ctx.globalCompositeOperation = "source-over"; // Set composite operation to "source-over"
+                // drawCollisionMap();
+                // ctx.willReadFrequently = true;
                 
                 // ctx.globalCompositeOperation = "destination-over"; // Set composite operation to "destination-over" for the collision map
                 // drawBackground(); // Draw the background image first
@@ -793,7 +795,8 @@ const onLoadMain = () =>{
                     if (exit) {
                         window.location.href = './page2.html';
                     }
-            
+                    
+                    //collision function not making website laggy
                     const collision = isCollision(playerX, playerY, playerWidth, playerHeight) || hitUI(playerX, playerY);
                     const moved = (event.key === 'ArrowDown' || event.key === 'ArrowUp' || event.key === 'ArrowLeft' || event.key === 'ArrowRight');
             
@@ -804,7 +807,6 @@ const onLoadMain = () =>{
                         movementCount = _movement_count;
                         movementCount += 1;
                         movementCount %= no_of_frames;
-                        updateGameArea();
                     } else if (collision && moved) {
                         // Handle collision logic
                         // ...
