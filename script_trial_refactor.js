@@ -387,6 +387,8 @@ const onLoadMain = () =>{
                 uiElement.style.left = `${x}px`;
                 img.onload = () => {
                     ctx.drawImage(img, x, y, width, height);
+                    uiElement.style.top = `${y}px`;
+                    uiElement.style.left = `${x}px`;
                     
                 }
                 ctx.drawImage(img, x, y, width, height);
