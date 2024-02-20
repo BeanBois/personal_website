@@ -380,7 +380,7 @@ const onLoadMain = () =>{
             function drawUIElement(uiElement, x, y) {
                 const img = new Image();
                 img.src = uiElement.src;
-                uiElement.
+                // uiElement.
                 //current position of ui
                 const width = uiElement.offsetWidth;
                 const height = uiElement.offsetHeight;

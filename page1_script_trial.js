@@ -467,7 +467,8 @@ const onLoadMain = () =>{
                 ctx.drawImage(chatbox_img, 0, 0, chatboxWidth, chatboxHeight);
                 let text_x = x + wpadding;
                 let text_y = y + hpadding;
-                const font_size = chatboxWidth/24;
+                const font_size = chatboxWidth/40;
+                // const font_size = chatboxWidth/32;
 
                 // const para_offset = 50;
                 // const para_offset = chatboxHeight/aux_counter;
@@ -476,7 +477,7 @@ const onLoadMain = () =>{
 
                 ctx.font = `${font_size}px MyCustomFontv1`;
                 ctx.fillStyle = 'black';
-                const max_letters = chatboxWidth/(font_size/2) - 5;
+                const max_letters = chatboxWidth/(font_size);
                 for(let i = 0; i < aux_counter; i++){
                     console.log('text_counter :', text_counter);
                     let text = texts[text_counter*aux_counter + i];
@@ -494,7 +495,7 @@ const onLoadMain = () =>{
                         }
                         ctx.fillText(line, text_x, text_y + line_count*(font_size+hpadding/2) );
                         line_count += 1;
-                        text_y += font_size/2;
+                        text_y += font_size/4;
                     }     
                     console.log('text :', text);
                     text_y += para_offset;
@@ -553,21 +554,21 @@ const onLoadMain = () =>{
                             hideUIElement(uiElement);
                     }
                 }
-                chatbox_img.onload = () => {
+                // chatbox_img.onload = () => {
                     
-                    ctx.globalCompositeOperation = "source-over";
-                    ctx.drawImage(chatbox_img, x, y, chatboxWidth, chatboxHeight);
-                    const text_x = x + wpadding/2;
-                    const text_y = y + hpadding/2;
-                    const font_size = 48;
-                    ctx.font = `${font_size}px MyCustomFontv1`;
-                    ctx.fillStyle = 'black';
-                    ctx.fillText(text, text_x, text_y);
-                };
+                //     ctx.globalCompositeOperation = "source-over";
+                //     ctx.drawImage(chatbox_img, x, y, chatboxWidth, chatboxHeight);
+                //     const text_x = x + wpadding/2;
+                //     const text_y = y + hpadding/2;
+                //     const font_size = 20;
+                //     ctx.font = `${font_size}px MyCustomFontv1`;
+                //     ctx.fillStyle = 'black';
+                //     ctx.fillText(text, text_x, text_y);
+                // };
                 ctx.drawImage(chatbox_img, x, y, chatboxWidth, chatboxHeight);
                 const text_x = x + wpadding;
                 const text_y = y + hpadding*2;                    
-                const font_size = 48;
+                const font_size = 20;
                 ctx.font = `${font_size}px MyCustomFontv1`;
                 ctx.fillStyle = 'black';
                 const max_letters = chatboxWidth/(font_size/2) - 5;
