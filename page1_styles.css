@@ -96,18 +96,18 @@ body {
 
 #timepoem{
     position: absolute;
-    /* left: 200px; */
-    /* top: 630px; */
-    left : 1400px;
-    top : 500px;
+    left: 200px;
+    top: 630px;
+    /* left : 1400px; */
+    /* top : 500px; */
 }
 
 #friendpoem{
     position: absolute;
-    /* left: 1250px; */
-    /* top: 800px; */
-    left : 1100px;
-    top : 300px;
+    left: 1250px;
+    top: 800px;
+    /* left : 1100px; */
+    /* top : 300px; */
 }
 
 #lovepoem{
@@ -134,13 +134,24 @@ body {
     left: 800px;
 }
 
+#lower_chatbox{
+    position: absolute;
+    display: none;
+    width: 100%;
+    height: 20%;
+    background-color: rgba(0, 0, 0, 0.5);
+    bottom: 0;
+    left: 0;
+    z-index: 3;
+}
+
 /* text box styling */
 @font-face {
     font-family: 'MyCustomFontv1';
     src: url('/public/fonts/chatbox_fontsv1.ttf') format('truetype');
   }
-  @font-face {
+  /* @font-face {
     font-family: 'MyCustomFontv2';
     src: url('/public/fonts/pkmnrseu.ttf') format('truetype');
-  }
+  } */
 

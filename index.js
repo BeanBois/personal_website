@@ -1,3 +1,10 @@
+//Purpose: currently index is a mess, so we will redirect user to page1 html 
+// which is cleaner at the moment
+window.onload = function() {
+    // Replace '<url>' with the desired URL
+    window.location.href = 'page1.html';
+};
+
 //alerts 
 
 //needs to be chrome
@@ -60,12 +67,9 @@ const proximityDistance = 100;
 const collisionProximity = 20;
 
 const gender = 'boy';
-// const playerUI = document.getElementById("player");
 const characterImage = new Image();
-// characterImage.src =playerUI.src;
 
 characterImage.src =`public/player/player_${gender}_sprite_transparent.png`;
-console.log(characterImage.src);
 const orientation_map ={
     'up': 1,
     'down': 0,
@@ -79,10 +83,10 @@ let movementCount = 0;
 
 
 const backgroundImage = new Image();
-backgroundImage.src = "public/maps/gamma/Hoenn_Secret_Base_Gamma.png"; // Replace with the path to your background image
+backgroundImage.src = "public/maps/alpha/Hoenn_Secret_Base_Alpha.png"; // Replace with the path to your background image
 
 const collisionMapImage = new Image();
-collisionMapImage.src = "public/maps/gamma/collision_map_gamma.jpg"; // Replace with the path to your collision map image
+collisionMapImage.src = "public/maps/alpha/collision_map_alpha.jpg"; // Replace with the path to your collision map image
 
 
 
@@ -112,7 +116,8 @@ function getUIPosition(uiElement) {
     };
 }
 const exits =[];
-const uiElementPositions = {};
+const uiElementData = {};
+
 
 
 // Iterate through the UI elements in the uiContainer
@@ -142,7 +147,6 @@ function sleep(ms) {
 //if exit is at img_coord = (x,y) in map, and we want exit to be at init_screen_player_pos
 //then x = canvas.width/2 - playerWidth / 2 - img_coord.x, y = canvas.height/2 - playerHeigth / 2 - img_coord.y
 const defaultSpawnPoint = uiElementPositions[exits[0]];
-console.log("exits :", defaultSpawnPoint);
 let spawnID = 'exit';
 
 const defaultSpawnPointWidth = () =>{
@@ -168,7 +172,6 @@ function setCookie() {
     console.log('cookie set');
 }
 
-//need better method to update/set location cookie
 function getLocationFromCookie() {
     const cookies = document.cookie.split("; ");
     for (const cookie of cookies) {
@@ -245,6 +248,40 @@ const onLoadMain = () =>{
                     backgroundImage.width, backgroundImage.height,
                     drawX, drawY, 
                     zoomedWidth, zoomedHeight);
+                    
+                // const prevStyle = ctx.fillStyle;
+                // ctx.fillStyle = "black";
+                // if(drawX <= canvas.height){
+                //     ctx.fillRect(0, 0, drawX, canvas.height);
+
+                // }
+                // else{
+                // ctx.fillRect(0, 0, canvas.height, drawX);
+
+                // }
+                // if(drawY <= canvas.width){
+                //     ctx.fillRect(0, 0, drawY, canvas.width);
+
+                // }
+                // else{
+                // ctx.fillRect(0, 0, canvas.width, drawY);
+
+                // }
+                // ctx.fillRect(0, 0, drawX, canvas.height);
+                // ctx.fillRect(0, 0, canvas.width,drawY);
+                // ctx.fillStyle = prevStyle;
+                // const gridSize = 10;
+                // for (let y = 0; y < canvas.height; y += gridSize) {
+                //     ctx.moveTo(0, y);
+                //     ctx.lineTo(canvas.width, y);
+                //   }
+                  
+                //   // Draw vertical grid lines
+                //   for (let x = 0; x < canvas.width; x += gridSize) {
+                //     ctx.moveTo(x, 0);
+                //     ctx.lineTo(x, canvas.height);
+                //   }
+                  
             }
 
             function drawCollisionMap(){
@@ -339,9 +376,11 @@ const onLoadMain = () =>{
                 }
             }   
 
+            //update this
             function drawUIElement(uiElement, x, y) {
                 const img = new Image();
                 img.src = uiElement.src;
+                uiElement.
                 //current position of ui
                 const width = uiElement.offsetWidth;
                 const height = uiElement.offsetHeight;
@@ -384,10 +423,8 @@ const onLoadMain = () =>{
                 const chatboxWidth = screenWidth - 2*wpadding;
                 const y = screenHeight - hpadding - chatboxHeight;
                 chatbox_img.src = 'public/pokemon_resources/chatbox.png';
+                ctx.globalCompositeOperation = "source-over";
                 chatbox_img.onload = () => {
-                    console.log('load chatbox');
-                    ctx.globalCompositeOperation = "source-over";
-
                     ctx.drawImage(chatbox_img, x, y, chatboxWidth, chatboxHeight);
                     const text_x = x + wpadding/2;
                     const text_y = y + hpadding/2;
@@ -441,7 +478,7 @@ const onLoadMain = () =>{
                 ctx.lineWidth = 2;
           
                 // Draw the rectangular border
-                // ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+                ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
                 // ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
                 // ctx.drawImage(characterImage, spriteX, spriteY, spriteWidth, spriteHeight, xUIRefPoint, yUIRefPoint, playerWidth, playerHeight);
             }
@@ -454,26 +491,18 @@ const onLoadMain = () =>{
                 clearCanvas();
                 
                 ctx.globalCompositeOperation = "source-over"; // Set composite operation to "source-over"
-                
                 // drawCollisionMap();
-                drawCollisionMap();
                 
                 drawBackground(); // Draw the background image first
                 ctx.globalCompositeOperation = "source-atop"; // Set composite operation to "destination-over" for the collision map
                 
                 // drawPlayer(); // Draw the player on top of the collision map
-
+                drawUI();         
+                // Draw the player
+                drawPlayer();
                 if(isInteractingWithText && text_counter < texts.length){
-                    console.log('drawing chatbox');
-                    ctx.globalCompositeOperation = "source-atop"; // Set composite operation to "source-over"
                     drawChatBox(texts[text_counter]);
                 }
-                else{
-                    console.log('drawing UI');
-                    drawUI();         
-                    // Draw the player
-                }
-                drawPlayer();
 
                 requestAnimationFrame(updateGameArea);
             }
@@ -498,6 +527,7 @@ const onLoadMain = () =>{
                         }
                         break;
                     case 'down':
+                        // console.log('down');
                         // Check if the player's bottom border collides with the UI's top border and they are aligned horizontally
                         if (playerBottom + threshold >= itemTop && playerBottom <= itemTop &&
                             ( (playerLeft >= itemLeft && playerRight <= itemRight) || (playerRight >= itemLeft && playerRight <= itemRight) || (playerLeft >= itemLeft && playerLeft <= itemRight) ) ) {
@@ -556,6 +586,40 @@ const onLoadMain = () =>{
                         'bottom' : playerB,
                     };
                     if(checkCollision(p,ui)) return true
+                    // Define the proximity range for UI collision
+                    // const proximity = proximityRange;
+            
+                    // Check if the player's bounding box overlaps with the UI element considering proximity
+                    // switch (currentOrientation) {
+                    //     case 'up':
+                    //       // Check if the player's top border collides with the UI's bottom border and they are aligned horizontally
+                    //       if (playerT - proximity <= uiBottom && playerT >= uiBottom && playerL >= uiLeft && playerR <= uiRight) {
+                    //         return true; // Collision detected
+                    //       }
+                    //       break;
+                      
+                    //     case 'down':
+                    //       // Check if the player's bottom border collides with the UI's top border and they are aligned horizontally
+                    //       if (playerB + proximity >= uiTop && playerB <= uiTop && playerL >= uiLeft && playerR <= uiRight) {
+                    //         return true; // Collision detected
+                    //       }
+                    //       break;
+                    //     case 'left':
+                    //       // Check if the player's left border collides with the UI's right border and they are aligned vertically
+                    //       if (playerL - proximity <= uiRight && playerL >= uiRight && playerT >= uiTop && playerB <= uiBottom) {
+                    //         return true; // Collision detected
+                    //       }
+                    //       break;
+
+                    //     case 'right':
+                    //       // Check if the player's right border collides with the UI's left border and they are aligned vertically
+                    //       if (playerR + proximity >= uiLeft && playerR <= uiLeft && playerT >= uiTop && playerB <= uiBottom) {
+                    //         return true; // Collision detected
+                    //       }
+                    //       break;
+                    //     default:
+                    //         break;
+                    //   } 
                 }
                 return false; // No 
             }
@@ -580,6 +644,8 @@ const onLoadMain = () =>{
                     const playerB = y + playerHeight;
                     // Define the proximity range for UI collision
                     const proximity = proximityRange;
+                    // console.log('ui : ',uiLeft,uiTop, uiRight, uiBottom);
+                    // console.log('player : ', playerL, playerT, playerR, playerB)
             
                     // Check if the player's bounding box overlaps with the UI element considering proximity
                     switch (currentOrientation) {
@@ -620,9 +686,9 @@ const onLoadMain = () =>{
 
             //collision check is very localised
             function isCollision(x, y, width, height) {
-                ctx.globalCompositeOperation = "source-over"; // Set composite operation to "source-over"
-                drawCollisionMap();
-                ctx.willReadFrequently = true;
+                // ctx.globalCompositeOperation = "source-over"; // Set composite operation to "source-over"
+                // drawCollisionMap();
+                // ctx.willReadFrequently = true;
                 
                 // ctx.globalCompositeOperation = "destination-over"; // Set composite operation to "destination-over" for the collision map
                 // drawBackground(); // Draw the background image first
@@ -632,7 +698,6 @@ const onLoadMain = () =>{
                         //check collision of upper border
                         for(let i =0; i < width; i++){
                             const pixelData = ctx.getImageData(x + i, y, 1, 1).data;
-                            console.log('pixelData :', pixelData[0], pixelData[1], pixelData[2]);
                             // Customize this check based on the color of your walls in the collision map image
                             if (pixelData[0] === 0 && pixelData[1] === 0 && pixelData[2] === 0) {
                                 return true; // Collision detected at any point within the player's area
@@ -817,12 +882,18 @@ const onLoadMain = () =>{
                                 uiDirection = 'up';
                             }
                         }
+                        // console.log('check orientation with UI, ', uiDirection);
+                        // console.log('uiElement : ', uiElement.id);
+                        // console.log('xDistance : ', xDistance);
+                        // console.log('yDistance : ', yDistance);
                         // Check if the player is facing the UI
                         //better way to check collision here
                         if (currentOrientation === uiDirection && 
                             absXDistance**2 + absYDistance**2 <= proximityDistance**2) 
                         {
                             
+                            // console.log('interacting with UI');
+                            // console.log('uiElement : ', uiElement.id);
 
                             // Perform the interaction for the UI element
                             // interactTextUI(event, uiElement);
@@ -861,7 +932,7 @@ const onLoadMain = () =>{
                 return {
                     handleEvent:  function (event) {
                         //handle flow here
-                        console.log('UI Interaction : ',isInteractingWithText);
+                        console.log(isInteractingWithText);
                         if(isInteractingWithText) handleTextInteraction(event);
                         else  movePlayer(event);
                     }

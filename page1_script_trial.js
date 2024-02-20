@@ -1,10 +1,3 @@
-//Purpose: currently index is a mess, so we will redirect user to page1 html 
-// which is cleaner at the moment
-window.onload = function() {
-    // Replace '<url>' with the desired URL
-    window.location.href = 'page1.html';
-};
-
 //alerts 
 
 //needs to be chrome
@@ -67,9 +60,12 @@ const proximityDistance = 100;
 const collisionProximity = 20;
 
 const gender = 'boy';
+// const playerUI = document.getElementById("player");
 const characterImage = new Image();
+// characterImage.src =playerUI.src;
 
 characterImage.src =`public/player/player_${gender}_sprite_transparent.png`;
+console.log(characterImage.src);
 const orientation_map ={
     'up': 1,
     'down': 0,
@@ -83,10 +79,10 @@ let movementCount = 0;
 
 
 const backgroundImage = new Image();
-backgroundImage.src = "public/maps/alpha/Hoenn_Secret_Base_Alpha.png"; // Replace with the path to your background image
+backgroundImage.src = "public/maps/gamma/Hoenn_Secret_Base_Gamma.png"; // Replace with the path to your background image
 
 const collisionMapImage = new Image();
-collisionMapImage.src = "public/maps/alpha/collision_map_alpha.jpg"; // Replace with the path to your collision map image
+collisionMapImage.src = "public/maps/gamma/collision_map_gamma.jpg"; // Replace with the path to your collision map image
 
 
 
@@ -107,6 +103,7 @@ const stopThreshold = 0;
 const scale = 10;
 
 
+const uiElementData ={};
 //UI
 function getUIPosition(uiElement) {
     const rect = uiElement.getBoundingClientRect();
@@ -117,13 +114,17 @@ function getUIPosition(uiElement) {
 }
 const exits =[];
 const uiElementPositions = {};
-
+const lower_chatbox = document.getElementById('lower_chatbox');
+const chatbox_regex = /chatbox/;
 
 // Iterate through the UI elements in the uiContainer
 Array.from(uiContainer.children).forEach((uiElement) => {
     const uiPosition = getUIPosition(uiElement);
     if(uiElement.value && uiElement.value === 'exit'){
         exits.push(uiElement.id);
+    }
+    else if(uiElement.id === 'chatbox'){
+
     }
     // Store the UI element's position in the object with the element's id as the key
     uiElementPositions[uiElement.id] = uiPosition;
@@ -145,7 +146,10 @@ function sleep(ms) {
 //since init_screen_player_pos = canvas.width/2 - playerWidth / 2, canvas.height/2 - playerHeigth / 2
 //if exit is at img_coord = (x,y) in map, and we want exit to be at init_screen_player_pos
 //then x = canvas.width/2 - playerWidth / 2 - img_coord.x, y = canvas.height/2 - playerHeigth / 2 - img_coord.y
+
 const defaultSpawnPoint = uiElementPositions[exits[0]];
+
+console.log("exits :", defaultSpawnPoint);
 let spawnID = 'exit';
 
 const defaultSpawnPointWidth = () =>{
@@ -171,6 +175,7 @@ function setCookie() {
     console.log('cookie set');
 }
 
+//need better method to update/set location cookie
 function getLocationFromCookie() {
     const cookies = document.cookie.split("; ");
     for (const cookie of cookies) {
@@ -205,7 +210,7 @@ for(const id in uiElementPositions){
         offsetY += x_shift*0.2;
     }
     uiElementPositions[id] = {
-        x : offsetX + canvas.width/2 - playerWidth/2,
+        x : offsetX + canvas.width/2 - playerWidth/2, // t
         y :  offsetY + canvas.height/2 + playerHeight/2 //l
     }    
 
@@ -247,40 +252,6 @@ const onLoadMain = () =>{
                     backgroundImage.width, backgroundImage.height,
                     drawX, drawY, 
                     zoomedWidth, zoomedHeight);
-                    
-                // const prevStyle = ctx.fillStyle;
-                // ctx.fillStyle = "black";
-                // if(drawX <= canvas.height){
-                //     ctx.fillRect(0, 0, drawX, canvas.height);
-
-                // }
-                // else{
-                // ctx.fillRect(0, 0, canvas.height, drawX);
-
-                // }
-                // if(drawY <= canvas.width){
-                //     ctx.fillRect(0, 0, drawY, canvas.width);
-
-                // }
-                // else{
-                // ctx.fillRect(0, 0, canvas.width, drawY);
-
-                // }
-                // ctx.fillRect(0, 0, drawX, canvas.height);
-                // ctx.fillRect(0, 0, canvas.width,drawY);
-                // ctx.fillStyle = prevStyle;
-                // const gridSize = 10;
-                // for (let y = 0; y < canvas.height; y += gridSize) {
-                //     ctx.moveTo(0, y);
-                //     ctx.lineTo(canvas.width, y);
-                //   }
-                  
-                //   // Draw vertical grid lines
-                //   for (let x = 0; x < canvas.width; x += gridSize) {
-                //     ctx.moveTo(x, 0);
-                //     ctx.lineTo(x, canvas.height);
-                //   }
-                  
             }
 
             function drawCollisionMap(){
@@ -321,6 +292,7 @@ const onLoadMain = () =>{
                         const uiElement = uiContainer.children[i];
                         const uiPosition = getUIPosition(uiElement);
                         uiElementPositions[uiElement.id] = uiPosition;
+                        
                     }
                     else if(reverse){
                         const uiElement = uiContainer.children[i];
@@ -393,8 +365,20 @@ const onLoadMain = () =>{
                     uiElement.style.left = `${x}px`;
                     
                 }
-                ctx.drawImage(img, x, y, width, height);
                 
+                ctx.drawImage(img, x, y, width, height);
+                // var x1 = x;
+                // var y1 = y;
+                // var x2 = x + width;
+                // var y2 = y + height;
+                // // Define the stroke color
+                // ctx.strokeStyle = "blue"; // You can use other CSS color values
+          
+                // // Define the line width
+                // ctx.lineWidth = 2;
+          
+                // Draw the rectangular border
+                // ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
             }
 
             function drawUI() {
@@ -405,12 +389,30 @@ const onLoadMain = () =>{
                 for(let i = 0; i < uiElements.length; i++){
                     const uiElement = uiElements[i];
                     const uiPosition = uiElementPositions[uiElement.id];
+                    const regex = /chatbox/;
+                    if(regex.test(uiElement.id)){
+                        continue;
+                    }
                     drawUIElement(uiElement, uiPosition.x, uiPosition.y);
                 }
             }
 
+            function withinBounds(x1,y1,x2,y2,i1,j1,i2,j2) {
+                if (x1 < i2 && x2 > i1 && y1 < j2 && y2 > j1) {
+                    return true;
+                }
+                return false;
+            }
+            function hideUIElement(uiElement) {
+                uiElement.style.display = "none";
+            }
+            function showUIElement(uiElement) {
+                uiElement.style.display = "block";
+            }
+
             function drawChatBox(text) {
                 const chatbox_img = new Image();
+                chatbox_img.id = 'chatbox';
                 const wpadding = 100;
                 const hpadding = 40;
                 const x = wpadding;
@@ -419,9 +421,25 @@ const onLoadMain = () =>{
                 const chatboxHeight = screenHeight/5;
                 const chatboxWidth = screenWidth - 2*wpadding;
                 const y = screenHeight - hpadding - chatboxHeight;
-                chatbox_img.src = 'public/pokemon_resources/chatbox.png';
-                ctx.globalCompositeOperation = "source-over";
+                chatbox_img.src = lower_chatbox.src;
+                for(uiElement of uiContainer.children){
+                    const position = uiElementPositions[uiElement.id];
+                    const x1 = position.x;
+                    const y1 = position.y;
+                    const x2 = position.x + uiElement.offsetWidth;
+                    const y2 = position.y + uiElement.offsetHeight;
+                    const regex = /chatbox/;
+                    const player_regex = /player/;
+                    if(!regex.test(uiElement.id) &&
+                        !player_regex.test(uiElement.id) &&
+                        withinBounds(x,y,x+chatboxWidth,y+chatboxHeight,x1,y1,x2,y2)){
+                            console.log('hiding ui :', uiElement.id);
+                            hideUIElement(uiElement);
+                    }
+                }
                 chatbox_img.onload = () => {
+                    
+                    ctx.globalCompositeOperation = "source-over";
                     ctx.drawImage(chatbox_img, x, y, chatboxWidth, chatboxHeight);
                     const text_x = x + wpadding/2;
                     const text_y = y + hpadding/2;
@@ -449,10 +467,10 @@ const onLoadMain = () =>{
                         line = text;
                         text = '';
                     }
+                    ctx.drawImage(chatbox_img, x, y, chatboxWidth, chatboxHeight);
                     ctx.fillText(line, text_x, text_y + line_count*(font_size+hpadding/2) );
                     line_count += 1;
                 }
-
                 // ctx.fillText(text, text_x, text_y);
             }
             
@@ -463,19 +481,21 @@ const onLoadMain = () =>{
                 const spriteHeight = characterImage.height;
                 const spriteX = spriteWidth * (orientation * 3 + movementCount) ;
                 const spriteY = 0;
+                
+
                 ctx.drawImage(characterImage, spriteX, spriteY, spriteWidth, spriteHeight, playerX, playerY, playerWidth, playerHeight);
-                var x1 = playerX;
-                var y1 = playerY;
-                var x2 = playerX + playerWidth;
-                var y2 = playerY + playerHeight;
-                // Define the stroke color
-                ctx.strokeStyle = "blue"; // You can use other CSS color values
+                // var x1 = playerX;
+                // var y1 = playerY;
+                // var x2 = playerX + playerWidth;
+                // var y2 = playerY + playerHeight;
+                // // Define the stroke color
+                // ctx.strokeStyle = "blue"; // You can use other CSS color values
           
-                // Define the line width
-                ctx.lineWidth = 2;
+                // // Define the line width
+                // ctx.lineWidth = 2;
           
-                // Draw the rectangular border
-                ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+                // // Draw the rectangular border
+                // ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
                 // ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
                 // ctx.drawImage(characterImage, spriteX, spriteY, spriteWidth, spriteHeight, xUIRefPoint, yUIRefPoint, playerWidth, playerHeight);
             }
@@ -488,23 +508,36 @@ const onLoadMain = () =>{
                 clearCanvas();
                 
                 ctx.globalCompositeOperation = "source-over"; // Set composite operation to "source-over"
+                
                 // drawCollisionMap();
+                drawCollisionMap();
                 
                 drawBackground(); // Draw the background image first
                 ctx.globalCompositeOperation = "source-atop"; // Set composite operation to "destination-over" for the collision map
                 
                 // drawPlayer(); // Draw the player on top of the collision map
-                drawUI();         
-                // Draw the player
-                drawPlayer();
+
                 if(isInteractingWithText && text_counter < texts.length){
+                    ctx.globalCompositeOperation = "source-atop"; // Set composite operation to "source-over"
                     drawChatBox(texts[text_counter]);
                 }
+                else{
+                    drawUI();         
+                    // Draw the player
+                }
+                drawPlayer();
 
                 requestAnimationFrame(updateGameArea);
             }
-
-            function checkCollision(player, item, threshold = 5) {
+            function drawBox(x, y, width, height, color) {
+                const original_GCO = ctx.globalCompositeOperation;
+                ctx.globalCompositeOperation = "source-over"; // Set composite operation to "source-over"
+                ctx.fillStyle = color;
+                ctx.fillRect(x, y, width, height);
+               ctx.globalCompositeOperation = original_GCO;
+            }
+            
+            function checkCollision(player, item, threshold = playerSpeed*0.5) {
                 const playerLeft = player.left;
                 const playerRight = player.right;
                 const playerTop = player.top;
@@ -514,34 +547,64 @@ const onLoadMain = () =>{
                 const itemRight = item.right;
                 const itemTop = item.top;
                 const itemBottom = item.bottom;
-              
+
+                function abs(x){
+                    if(x < 0) return -x;
+                    return x;
+                }
                 switch (currentOrientation) {
                     case 'up':
+                        
                         // Check if the player's top border collides with the UI's bottom border and they are aligned horizontally
-                        if (playerTop - threshold <= itemBottom && playerTop >= itemBottom && 
-                            ( (playerLeft >= itemLeft && playerRight <= itemRight) || (playerRight >= itemLeft && playerRight <= itemRight) || (playerLeft >= itemLeft && playerLeft <= itemRight) ) ) {
-                            return true; // Collision detected
-                        }
+                        if (
+                                abs(playerTop - itemBottom) <= threshold 
+                            && 
+                                ( 
+                                    (playerLeft >= itemLeft && playerRight <= itemRight) || 
+                                    (playerRight >= itemLeft && playerRight <= itemRight) || 
+                                    (playerLeft >= itemLeft && playerLeft <= itemRight) 
+                                ) 
+                            ){
+                                return true; // Collision detected
+                            }
                         break;
                     case 'down':
-                        // console.log('down');
                         // Check if the player's bottom border collides with the UI's top border and they are aligned horizontally
-                        if (playerBottom + threshold >= itemTop && playerBottom <= itemTop &&
-                            ( (playerLeft >= itemLeft && playerRight <= itemRight) || (playerRight >= itemLeft && playerRight <= itemRight) || (playerLeft >= itemLeft && playerLeft <= itemRight) ) ) {
+                        if (
+                            abs(itemTop - playerBottom) <= threshold  
+                            && 
+
+                            // playerBottom + threshold <= itemTop && playerBottom <= itemTop &&
+                            ( (playerLeft >= itemLeft && playerRight <= itemRight) 
+                            || (playerRight >= itemLeft && playerRight <= itemRight) 
+                            || (playerLeft >= itemLeft && playerLeft <= itemRight) ) 
+                            ) {
                             return true; // Collision detected
                         }
                         break;
                     case 'left':
                         // Check if the player's left border collides with the UI's right border and they are aligned vertically
-                        if (playerLeft - threshold <= itemRight && playerLeft >= itemRight && 
+                        if (
+                            abs(playerLeft - itemRight) <= threshold  
+                            && 
+
+                            // playerLeft - threshold <= itemRight && playerLeft >= itemRight && 
+
                             ((playerTop >= itemTop && playerBottom <= itemBottom) || (playerTop >= itemTop && playerTop <= itemBottom) || playerBottom >= itemTop && playerBottom <= itemBottom) ) {
                             return true; // Collision detected
                         }
                         break;
                     case 'right':
                         // Check if the player's right border collides with the UI's left border and they are aligned vertically
-                        if (playerRight + threshold >= itemLeft && playerRight <= itemLeft &&                             
-                            ((playerTop >= itemTop && playerBottom <= itemBottom) || (playerTop >= itemTop && playerTop <= itemBottom) || playerBottom >= itemTop && playerBottom <= itemBottom) ) {
+                        if (
+                            abs(playerRight - itemLeft) <= threshold  
+                            && 
+
+                            // playerRight + threshold >= itemLeft && playerRight <= itemLeft &&                             
+                            ((playerTop >= itemTop && playerBottom <= itemBottom) 
+                            || (playerTop >= itemTop && playerTop <= itemBottom) 
+                            || playerBottom >= itemTop && playerBottom <= itemBottom) 
+                            ) {
                             return true; // Collision detected
                         }
                         break;
@@ -559,10 +622,17 @@ const onLoadMain = () =>{
                 }
                 for (const id in uiElementPositions) {
                     const uiElement = document.getElementById(id);
-                    if(uiElement.dataset.walkable == "true") continue;
+                    if(uiElement.dataset.walkable && uiElement.dataset.walkable  === "true") continue;
+
                     const uiPosition = uiElementPositions[uiElement.id];
                     const uiLeft = uiPosition.x;
                     const uiRight = uiPosition.x + uiElement.offsetWidth;
+                    // const uiTop = uiPosition.y;
+                    // const uiBottom = uiPosition.y - uiElement.offsetHeight;
+
+                    // const uiTop = uiPosition.y + uiElement.offsetHeight;
+                    // const uiBottom = uiPosition.y;
+
                     const uiTop = uiPosition.y;
                     const uiBottom = uiPosition.y + uiElement.offsetHeight;
                     const ui ={
@@ -574,6 +644,9 @@ const onLoadMain = () =>{
 
                     const playerL = x;
                     const playerR = x + playerWidth;
+                    // const playerT = y + playerHeight;
+                    // const playerB = y;
+
                     const playerT = y;
                     const playerB = y + playerHeight;
                     const p = {
@@ -583,40 +656,6 @@ const onLoadMain = () =>{
                         'bottom' : playerB,
                     };
                     if(checkCollision(p,ui)) return true
-                    // Define the proximity range for UI collision
-                    // const proximity = proximityRange;
-            
-                    // Check if the player's bounding box overlaps with the UI element considering proximity
-                    // switch (currentOrientation) {
-                    //     case 'up':
-                    //       // Check if the player's top border collides with the UI's bottom border and they are aligned horizontally
-                    //       if (playerT - proximity <= uiBottom && playerT >= uiBottom && playerL >= uiLeft && playerR <= uiRight) {
-                    //         return true; // Collision detected
-                    //       }
-                    //       break;
-                      
-                    //     case 'down':
-                    //       // Check if the player's bottom border collides with the UI's top border and they are aligned horizontally
-                    //       if (playerB + proximity >= uiTop && playerB <= uiTop && playerL >= uiLeft && playerR <= uiRight) {
-                    //         return true; // Collision detected
-                    //       }
-                    //       break;
-                    //     case 'left':
-                    //       // Check if the player's left border collides with the UI's right border and they are aligned vertically
-                    //       if (playerL - proximity <= uiRight && playerL >= uiRight && playerT >= uiTop && playerB <= uiBottom) {
-                    //         return true; // Collision detected
-                    //       }
-                    //       break;
-
-                    //     case 'right':
-                    //       // Check if the player's right border collides with the UI's left border and they are aligned vertically
-                    //       if (playerR + proximity >= uiLeft && playerR <= uiLeft && playerT >= uiTop && playerB <= uiBottom) {
-                    //         return true; // Collision detected
-                    //       }
-                    //       break;
-                    //     default:
-                    //         break;
-                    //   } 
                 }
                 return false; // No 
             }
@@ -628,12 +667,15 @@ const onLoadMain = () =>{
                 }
                 for (const id of exits) {
                     const uiElement = document.getElementById(id);
-                    // const uiPosition = uiElementPositions[uiElement.id];
-                    const uiPosition = getUIPosition(uiElement);
+                    const uiPosition = uiElementPositions[uiElement.id];
+                    // const uiPosition = getUIPosition(uiElement);
                     const uiLeft = uiPosition.x;
                     const uiRight = uiPosition.x + uiElement.offsetWidth;
-                    const uiTop = uiPosition.y;
-                    const uiBottom = uiPosition.y + uiElement.offsetHeight;
+                    const uiTop = uiPosition.y + uiElement.offsetHeight;
+                    const uiBottom = uiPosition.y;
+                    
+                    // const uiTop = uiPosition.y;
+                    // const uiBottom = uiPosition.y - uiElement.offsetHeight;
                     
                     const playerL = x;
                     const playerR = x + playerWidth;
@@ -641,8 +683,6 @@ const onLoadMain = () =>{
                     const playerB = y + playerHeight;
                     // Define the proximity range for UI collision
                     const proximity = proximityRange;
-                    // console.log('ui : ',uiLeft,uiTop, uiRight, uiBottom);
-                    // console.log('player : ', playerL, playerT, playerR, playerB)
             
                     // Check if the player's bounding box overlaps with the UI element considering proximity
                     switch (currentOrientation) {
@@ -683,9 +723,9 @@ const onLoadMain = () =>{
 
             //collision check is very localised
             function isCollision(x, y, width, height) {
-                // ctx.globalCompositeOperation = "source-over"; // Set composite operation to "source-over"
-                // drawCollisionMap();
-                // ctx.willReadFrequently = true;
+                ctx.globalCompositeOperation = "source-over"; // Set composite operation to "source-over"
+                drawCollisionMap();
+                ctx.willReadFrequently = true;
                 
                 // ctx.globalCompositeOperation = "destination-over"; // Set composite operation to "destination-over" for the collision map
                 // drawBackground(); // Draw the background image first
@@ -765,6 +805,26 @@ const onLoadMain = () =>{
                     isInteractingWithText = false;
                     text_counter = 0;
                     texts = [];
+                    const wpadding = 100;
+                    const hpadding = 40;
+                    const x = wpadding;
+                    const screenHeight = canvas.height;
+                    const screenWidth = canvas.width;
+                    const chatboxHeight = screenHeight/5;
+                    const chatboxWidth = screenWidth - 2*wpadding;
+                    const y = screenHeight - hpadding - chatboxHeight;
+                    for(uiElement of uiContainer.children){
+                        const position = uiElementPositions[uiElement.id];
+                        const x1 = position.x;
+                        const y1 = position.y;
+                        const x2 = position.x + uiElement.offsetWidth;
+                        const y2 = position.y + uiElement.offsetHeight;
+                        const regex = /chatbox/;
+                        if(!regex.test(uiElement.id) &&withinBounds(x,y,x+chatboxWidth,y+chatboxHeight,x1,y1,x2,y2)){
+                            console.log('showing ui');
+                            showUIElement(uiElement);
+                        }
+                    }
                 }
             
                  function movePlayer(event) {
@@ -879,18 +939,12 @@ const onLoadMain = () =>{
                                 uiDirection = 'up';
                             }
                         }
-                        // console.log('check orientation with UI, ', uiDirection);
-                        // console.log('uiElement : ', uiElement.id);
-                        // console.log('xDistance : ', xDistance);
-                        // console.log('yDistance : ', yDistance);
                         // Check if the player is facing the UI
                         //better way to check collision here
                         if (currentOrientation === uiDirection && 
                             absXDistance**2 + absYDistance**2 <= proximityDistance**2) 
                         {
                             
-                            // console.log('interacting with UI');
-                            // console.log('uiElement : ', uiElement.id);
 
                             // Perform the interaction for the UI element
                             // interactTextUI(event, uiElement);
@@ -900,15 +954,16 @@ const onLoadMain = () =>{
                                     // const response =  fetch(filepath).then(response => {
                                     fetch(filepath).then(response => {
                                         if (response.status === 200) {
-                                            console.log("response received:", response);
+                                            // console.log("response received:", response);
                                             response.text().then(data => {
-                                                console.log("data received:", data);
+                                                // console.log("data received:", data);
                                                 const lines = data.split('\n');
                                                 for (let i = 0; i < lines.length; i++) {
                                                     if (lines[i] !== '') {
                                                         texts.push(lines[i]);
                                                     }
                                                 }
+                                                console.log('interacting wth ui');
                                                 isInteractingWithText = true;
                                                 text_counter = 0;
                                             }).catch(error => {
@@ -929,7 +984,6 @@ const onLoadMain = () =>{
                 return {
                     handleEvent:  function (event) {
                         //handle flow here
-                        console.log(isInteractingWithText);
                         if(isInteractingWithText) handleTextInteraction(event);
                         else  movePlayer(event);
                     }
