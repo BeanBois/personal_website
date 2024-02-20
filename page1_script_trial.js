@@ -56,7 +56,7 @@ const playerWidth = 90;
 const playerHeight = 125;
 const playerSpeed = 20;
 const player_sprite_count = 12;
-const proximityDistance = 100;
+const proximityDistance = 150;
 const collisionProximity = 20;
 
 const gender = 'boy';
@@ -115,6 +115,7 @@ function getUIPosition(uiElement) {
 const exits =[];
 const uiElementPositions = {};
 const lower_chatbox = document.getElementById('lower_chatbox');
+const large_chatbox = document.getElementById('large_chatbox');
 const chatbox_regex = /chatbox/;
 
 // Iterate through the UI elements in the uiContainer
@@ -134,7 +135,9 @@ Array.from(uiContainer.children).forEach((uiElement) => {
 //TEXT UI
 let texts = [];
 let text_counter = 0;
+let text_length = 0;
 let isInteractingWithText = false;
+let isInteractingWithPoem = false;
 let isRequestInProgress = false;
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -399,8 +402,11 @@ const onLoadMain = () =>{
 
             function withinBounds(x1,y1,x2,y2,i1,j1,i2,j2) {
                 if (x1 < i2 && x2 > i1 && y1 < j2 && y2 > j1) {
+                    console.log('collision detected');
                     return true;
                 }
+                console.log('collision not detected');
+
                 return false;
             }
             function hideUIElement(uiElement) {
@@ -410,6 +416,116 @@ const onLoadMain = () =>{
                 uiElement.style.display = "block";
             }
 
+            function drawPoem(texts, text_counter, aux_counter) {
+                const chatbox_img = new Image();
+                chatbox_img.id = 'chatbox';
+                const x = 0;
+                const screenHeight = canvas.height;
+                const screenWidth = canvas.width;
+                const chatboxHeight = screenHeight * 0.8;
+                const chatboxWidth = screenWidth * 0.4;
+                // const y = screenHeight - hpadding - chatboxHeight;
+                const y = 0;
+                chatbox_img.src = large_chatbox.src;
+                for(uiElement of uiContainer.children){
+                    const position = uiElementPositions[uiElement.id];
+                    const x1 = position.x;
+                    const y1 = position.y;
+                    const x2 = position.x + uiElement.offsetWidth;
+                    const y2 = position.y + uiElement.offsetHeight;
+                    const regex = /chatbox/;
+                    // const player_regex = /player/;
+                    if(!regex.test(uiElement.id) &&
+                        // !player_regex.test(uiElement.id) &&
+                        withinBounds(x,y,x+chatboxWidth,y+chatboxHeight,x1,y1,x2,y2)){
+                            console.log('hiding ui :', uiElement.id);
+                            hideUIElement(uiElement);
+                    }
+                }
+
+                // chatbox_img.onload = () => {                    
+                //     ctx.globalCompositeOperation = "source-over";
+                //     ctx.drawImage(chatbox_img, x, y, chatboxWidth, chatboxHeight);
+                //     let text_x = x + wpadding/2;
+                //     let text_y = y + hpadding/2;
+                //     const para_offset = (chatboxHeight-2*hpadding)/aux_counter;
+                //     const font_size = 48;
+                //     ctx.font = `${font_size}px MyCustomFontv1`;
+                //     ctx.fillStyle = 'black';
+                //     for(let i = 0; i < aux_counter; i++){
+                //         const text = texts[text_counter*aux_counter + i];
+                //         console.log('text :', text);
+                //         ctx.fillText(text, text_x, text_y);
+                //         text_y += para_offset;
+                //     }
+                // };
+                // ctx.drawImage(chatbox_img, x, y, chatboxWidth, chatboxHeight);
+                const wpadding = 40;
+                // const hpadding = 40;
+                const hpadding = chatboxWidth/7;
+                ctx.globalCompositeOperation = "source-over";
+                ctx.drawImage(chatbox_img, 0, 0, chatboxWidth, chatboxHeight);
+                let text_x = x + wpadding;
+                let text_y = y + hpadding;
+                const font_size = chatboxWidth/24;
+
+                // const para_offset = 50;
+                // const para_offset = chatboxHeight/aux_counter;
+                const para_offset = hpadding;
+                console.log('para :', para_offset);
+
+                ctx.font = `${font_size}px MyCustomFontv1`;
+                ctx.fillStyle = 'black';
+                const max_letters = chatboxWidth/(font_size/2) - 5;
+                for(let i = 0; i < aux_counter; i++){
+                    console.log('text_counter :', text_counter);
+                    let text = texts[text_counter*aux_counter + i];
+                    let line = '';
+                    let line_count = 0;
+                    while(text?.length > 0){
+                        if(text.length > max_letters){
+                            line = text.slice(0, max_letters);
+                            // line += '-';
+                            text = text.slice(max_letters);
+                        }
+                        else{
+                            line = text;
+                            text = '';
+                        }
+                        ctx.fillText(line, text_x, text_y + line_count*(font_size+hpadding/2) );
+                        line_count += 1;
+                        text_y += font_size/2;
+                    }     
+                    console.log('text :', text);
+                    text_y += para_offset;
+                }
+                // for(let i = 0; i < aux_counter; i++){
+                //     let text = texts[text_counter*aux_counter + i];    
+                //     let text_x = x + wpadding/2;
+                //     let text_y = y + hpadding/2;
+                //     const para_offset = (chatboxHeight-2*hpadding)/aux_counter;                  
+                //     const font_size = 48;
+                //     ctx.font = `${font_size}px MyCustomFontv1`;
+                //     ctx.fillStyle = 'black';
+                //     const max_letters = chatboxWidth/(font_size/2) - 5;
+                //     let line = '';
+                //     let line_count = 0;
+                //     while(text?.length > 0){
+                //         if(text.length > max_letters){
+                //             line = text.slice(0, max_letters);
+                //             // line += '-';
+                //             text = text.slice(max_letters);
+                //         }
+                //         else{
+                //             line = text;
+                //             text = '';
+                //         }
+                //         ctx.drawImage(chatbox_img, x, y, chatboxWidth, chatboxHeight);
+                //         ctx.fillText(line, text_x, text_y + line_count*(font_size+hpadding/2) );
+                //         line_count += 1;
+                //     }     
+                // }     
+            }
             function drawChatBox(text) {
                 const chatbox_img = new Image();
                 chatbox_img.id = 'chatbox';
@@ -467,7 +583,6 @@ const onLoadMain = () =>{
                         line = text;
                         text = '';
                     }
-                    ctx.drawImage(chatbox_img, x, y, chatboxWidth, chatboxHeight);
                     ctx.fillText(line, text_x, text_y + line_count*(font_size+hpadding/2) );
                     line_count += 1;
                 }
@@ -519,7 +634,13 @@ const onLoadMain = () =>{
 
                 if(isInteractingWithText && text_counter < texts.length){
                     ctx.globalCompositeOperation = "source-atop"; // Set composite operation to "source-over"
-                    drawChatBox(texts[text_counter]);
+                    if(isInteractingWithPoem){
+                        const aux_counter = parseInt(texts[texts.length-1]);
+                        drawPoem(texts, text_counter, aux_counter);
+                    }
+                    else{
+                        drawChatBox(texts[text_counter]);
+                    }
                 }
                 else{
                     drawUI();         
@@ -537,7 +658,7 @@ const onLoadMain = () =>{
                ctx.globalCompositeOperation = original_GCO;
             }
             
-            function checkCollision(player, item, threshold = playerSpeed*0.5) {
+            function checkCollision(player, item, threshold = playerSpeed*0.25) {
                 const playerLeft = player.left;
                 const playerRight = player.right;
                 const playerTop = player.top;
@@ -792,18 +913,54 @@ const onLoadMain = () =>{
             
                 function handleTextInteraction(event) {
                     if (event.key === 'x') {
-                        if (text_counter < texts.length - 1) {
+                        if (text_counter < text_length - 1) {
                             text_counter += 1;
-                        } else {
-                            resetTextInteraction();
+                        }
+                        
+                        else {
+                            if(isInteractingWithPoem){
+                                resetPoemInteraction();
+                            }
+                            else{
+                                resetTextInteraction();
+                            }
                         }
                     }
                 }
-            
+
+                function resetPoemInteraction() {
+                    console.log('reset poem UI');
+                    isInteractingWithText = false;
+                    isInteractingWithPoem = false;
+                    text_counter = 0;
+                    text_length = 0;
+                    texts = [];
+                    const x = 0;
+                    const screenHeight = canvas.height;
+                    const screenWidth = canvas.width;
+                    const chatboxHeight = screenHeight * 0.8;
+                    const chatboxWidth = screenWidth * 0.4;
+                    // const y = screenHeight - hpadding - chatboxHeight;
+                    const y = 0;
+                    for(uiElement of uiContainer.children){
+                        const position = uiElementPositions[uiElement.id];
+                        const x1 = position.x;
+                        const y1 = position.y;
+                        const x2 = position.x + uiElement.offsetWidth;
+                        const y2 = position.y + uiElement.offsetHeight;
+                        const regex = /chatbox/;
+                        if(!regex.test(uiElement.id) &&withinBounds(x,y,x+chatboxWidth,y+chatboxHeight,x1,y1,x2,y2)){
+                            console.log('showing ui', uiElement.id);
+                            showUIElement(uiElement);
+                        }
+                    }
+                }
+
                 function resetTextInteraction() {
                     console.log('reset Text UI');
                     isInteractingWithText = false;
                     text_counter = 0;
+                    text_length = 0;
                     texts = [];
                     const wpadding = 100;
                     const hpadding = 40;
@@ -820,8 +977,9 @@ const onLoadMain = () =>{
                         const x2 = position.x + uiElement.offsetWidth;
                         const y2 = position.y + uiElement.offsetHeight;
                         const regex = /chatbox/;
+                        console.log('showing ui');
                         if(!regex.test(uiElement.id) &&withinBounds(x,y,x+chatboxWidth,y+chatboxHeight,x1,y1,x2,y2)){
-                            console.log('showing ui');
+                            console.log('showing ui', uiElement.id);
                             showUIElement(uiElement);
                         }
                     }
@@ -916,6 +1074,7 @@ const onLoadMain = () =>{
                         const uiElement = uiContainer.children[i];
                         // const uiPosition = getUIPosition(uiElement);
                         const uiPosition = uiElementPositions[uiElement.id];
+
                         const xDistance = playerPosition.x - uiPosition.x;
                         const yDistance = playerPosition.y - uiPosition.y;
                         
@@ -939,8 +1098,18 @@ const onLoadMain = () =>{
                                 uiDirection = 'up';
                             }
                         }
-                        // Check if the player is facing the UI
+                        // Check if the player is facing the UI and near UI
                         //better way to check collision here
+                        if(uiElement.id==='angerpoem'){
+                        console.log('uiDirection :', uiDirection);
+                        console.log('uiPosition :', uiPosition);
+                        console.log('playerPosition :', playerPosition);
+                        console.log('currentOrientation :', currentOrientation);
+                        console.log('absXDistance :', absXDistance**2);
+                        console.log('absYDistance :', absYDistance**2);
+                        console.log('proximityDistance :', proximityDistance**2);
+
+                        }
                         if (currentOrientation === uiDirection && 
                             absXDistance**2 + absYDistance**2 <= proximityDistance**2) 
                         {
@@ -965,6 +1134,16 @@ const onLoadMain = () =>{
                                                 }
                                                 console.log('interacting wth ui');
                                                 isInteractingWithText = true;
+                                                text_length = texts.length;
+                                                if(uiElement.dataset.poem === 'true'){
+                                                    isInteractingWithPoem = true;
+                                                    const aux_counter = parseInt(texts[texts.length-1]);//no of sent. in para
+                                                    console.log('numerator :', texts.length);
+                                                    console.log('denominator :', aux_counter);
+                                                    text_length = texts.length/aux_counter - 1;
+
+                                                    console.log('text length :', text_length);
+                                                }
                                                 text_counter = 0;
                                             }).catch(error => {
                                                 console.error("An error occurred with reading txt file:", error);
