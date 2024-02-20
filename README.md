@@ -19,6 +19,6 @@ of the poems (which is crucial) will be visually available!
 
 right now only this area is available. I am currently learning German, AI and Quant Physics, but when i have free time I will be working on this website so do be patient as i have alot of ideas for this website!
 
-Current link : https://beanbois.github.io/pp_website/
+Current link : https://beanbois.github.io/pp_website/](https://beanbois.github.io/personal_website/)https://beanbois.github.io/personal_website/
 
 
